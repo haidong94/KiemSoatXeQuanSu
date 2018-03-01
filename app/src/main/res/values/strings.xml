@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Kiểm soát xe quân sự</string>
+    <string name="license_plates">Biển số xe</string>
+    <string name="read_image">Đọc Biển Số Xe</string>
+    <string name="seach_information">TRA CỨU THÔNG TIN</string>
+    <string name="notebook">SỔ TAY LÁI XE</string>
+    <string name="violation_records">BIÊN BẢN VI PHẠM</string>
+    <string name="demo">item</string>
+    <string name="select_type_car">Chọn Loại Xe</string>
+    <string name="select_car">Chọn Xe</string>
+    <string name="search">Tìm Kiếm</string>
+    <string name="detail_part">Chi Tiết Phụ Tùng</string>
+    <string name="select_part">Chọn Công Tác</string>
+    <string name="camera_permission_error">Camera Permission Error</string>
+</resources>
