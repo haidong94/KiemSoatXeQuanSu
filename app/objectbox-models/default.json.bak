@@ -18,11 +18,85 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "2:5960458997563153454",
+      "lastPropertyId": "6:7911496416618763030",
+      "name": "ChiTietPhuTung",
+      "properties": [
+        {
+          "id": "1:2415754064491032786",
+          "name": "Id"
+        },
+        {
+          "id": "2:271640707840325633",
+          "name": "Ten"
+        },
+        {
+          "id": "3:4095449986777432059",
+          "name": "QuyCach"
+        },
+        {
+          "id": "4:758099172104177428",
+          "name": "DVT"
+        },
+        {
+          "id": "5:3385574119803482009",
+          "name": "SoLuong"
+        },
+        {
+          "id": "6:7911496416618763030",
+          "name": "DonGia"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:4985715880019997401",
+      "lastPropertyId": "2:4870701282497457338",
+      "name": "PhuTung",
+      "properties": [
+        {
+          "id": "1:6944362707009780292",
+          "name": "Id"
+        },
+        {
+          "id": "2:4870701282497457338",
+          "name": "name"
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:4679403837807052664",
+          "name": "chiTietPhuTungList"
+        }
+      ]
+    },
+    {
+      "id": "4:7028374482043058719",
+      "lastPropertyId": "2:2151619844978330724",
+      "name": "NguyenVatLieu",
+      "properties": [
+        {
+          "id": "1:9146022581134603403",
+          "name": "Id"
+        },
+        {
+          "id": "2:2151619844978330724",
+          "name": "name"
+        }
+      ],
+      "relations": [
+        {
+          "id": "2:7305842890382331854",
+          "name": "phuTungList"
+        }
+      ]
     }
   ],
-  "lastEntityId": "1:822424854827962400",
+  "lastEntityId": "4:7028374482043058719",
   "lastIndexId": "0:0",
-  "lastRelationId": "0:0",
+  "lastRelationId": "2:7305842890382331854",
   "lastSequenceId": "0:0",
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,

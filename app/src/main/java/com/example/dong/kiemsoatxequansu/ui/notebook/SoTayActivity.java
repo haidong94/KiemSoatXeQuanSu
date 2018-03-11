@@ -16,7 +16,8 @@ import android.widget.Spinner;
 import com.example.dong.kiemsoatxequansu.R;
 import com.example.dong.kiemsoatxequansu.app.App;
 import com.example.dong.kiemsoatxequansu.data.importer.ObjectBoxImporter;
-import com.example.dong.kiemsoatxequansu.data.model.ChiTietPhuTung;
+import com.example.dong.kiemsoatxequansu.data.model.Matter;
+import com.example.dong.kiemsoatxequansu.data.model.Matter_;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class SoTayActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST = 1;
     BoxStore boxStore;
-    Box<ChiTietPhuTung> box;
+    Box<Matter> box;
 
     Toolbar toolbar;
     Spinner spinLoaiXe,spinChungLoaiXe,spinNhomCongTac,spinChiTietPhuTung;
@@ -45,7 +46,7 @@ public class SoTayActivity extends AppCompatActivity {
 
         checkPermission();
         boxStore = ((App) getApplication()).getBoxStore();
-        box = boxStore.boxFor(ChiTietPhuTung.class);
+        box = boxStore.boxFor(Matter.class);
 
         ObjectBoxImporter objectBoxImporter = new ObjectBoxImporter(getResources(),SoTayActivity.this);
         try {
@@ -62,10 +63,11 @@ public class SoTayActivity extends AppCompatActivity {
     }
 
     private void setUpSpiner() {
-        List<ChiTietPhuTung> listChiTiet=box.query().build().find();
-        for(ChiTietPhuTung chiTietPhuTung:listChiTiet)
+        List<Matter> listChiTiet=box.query().equal(Matter_.name,"Nguyên vật liệu chính").build().find();
+
+        for(Matter chiTietPhuTung:listChiTiet)
         {
-            list.add(chiTietPhuTung.getTen());
+            list.add(chiTietPhuTung.getName());
         }
 
         ArrayAdapter<String> adapterSoYTe=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,list);

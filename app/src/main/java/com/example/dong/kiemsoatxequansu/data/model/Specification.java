@@ -7,7 +7,7 @@ import io.objectbox.annotation.Id;
  * Created by DONG on 31-Oct-17.
  */
 @Entity
-public class ChiTietPhuTung {
+public class Specification {
     @Id( assignable = true )
     long Id;
 
@@ -17,10 +17,10 @@ public class ChiTietPhuTung {
     String SoLuong;
     String DonGia;
 
-    public ChiTietPhuTung() {
+    public Specification() {
     }
 
-    public ChiTietPhuTung(long id, String ten, String quyCach, String DVT, String soLuong, String donGia) {
+    public Specification(long id, String ten, String quyCach, String DVT, String soLuong, String donGia) {
         Id = id;
         Ten = ten;
         QuyCach = quyCach;
