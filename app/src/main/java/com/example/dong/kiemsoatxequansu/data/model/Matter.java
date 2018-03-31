@@ -1,51 +1,41 @@
+
 package com.example.dong.kiemsoatxequansu.data.model;
+
 import java.util.List;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
+import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import io.objectbox.relation.ToMany;
+import io.objectbox.relation.ToOne;
 
-/**
- * Created by Dong on 05-Mar-18.
- */
 @Entity
 public class Matter {
+
     @Id( assignable = true )
-    long Id;
+    @SerializedName("Id_Matter")
+    @Expose
+    private long idMatter;
+    @SerializedName("Name_Matter")
+    @Expose
+    private String nameMatter;
 
-    String name;
-    List<DetailMatter> phuTungList;
-
-    public Matter() {
+    public long getIdMatter() {
+        return idMatter;
     }
 
-    public Matter(long id, String name, List<DetailMatter> phuTungList) {
-        Id = id;
-        this.name = name;
-        this.phuTungList = phuTungList;
+    public void setIdMatter(long idMatter) {
+        this.idMatter = idMatter;
     }
 
-    public List<DetailMatter> getPhuTungList() {
-        return phuTungList;
+    public String getNameMatter() {
+        return nameMatter;
     }
 
-    public void setPhuTungList(List<DetailMatter> phuTungList) {
-        this.phuTungList = phuTungList;
-    }
-
-    public long getId() {
-        return Id;
-    }
-
-    public void setId(long id) {
-        Id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setNameMatter(String nameMatter) {
+        this.nameMatter = nameMatter;
     }
 }

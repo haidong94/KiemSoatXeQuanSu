@@ -75,6 +75,11 @@ public class TraThongTinActivity extends AppCompatActivity implements ICallBack 
             }
         });
 
+//        final Bitmap bitmap = BitmapFactory.decodeResource(
+//                getApplicationContext().getResources(),
+//                R.drawable.bienxemay2
+//        );
+//        imageView.setImageBitmap(bitmap);
         btnProcess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,23 +94,34 @@ public class TraThongTinActivity extends AppCompatActivity implements ICallBack 
         });
     }
 
+    /**
+     * Setup control
+     * Created by ${USER} on ${DATE}
+     * #set( $USER = "hhdong" )
+     Created by ${USER} on ${DATE}
+     */
     private void addControl() {
-        imageView = findViewById(R.id.imageView);
-        btnProcess = findViewById(R.id.btnProcess);
-        tvResult=findViewById(R.id.tvResult);
+        try {
+            imageView = findViewById(R.id.imageView);
+            btnProcess = findViewById(R.id.btnProcess);
+            tvResult=findViewById(R.id.tvResult);
 
-        toolbar=findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        //quay về activity trước
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+            toolbar=findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            //quay về activity trước
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
 
-        ActionBar actionBar=getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);//mũi tên quay về
+            ActionBar actionBar=getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(true);//mũi tên quay về
+        } catch (Exception e) {
+           e.printStackTrace();
+        }
+
     }
 
     private void checkPermission() {
@@ -192,7 +208,7 @@ public class TraThongTinActivity extends AppCompatActivity implements ICallBack 
         if(stringBuilder.toString().equals("")){
             tvResult.getText().clear();
             Toast.makeText(this,"Chất lượng ảnh chưa tốt. Bạn có thể nhập tay",Toast.LENGTH_SHORT).show();
-        }else if (stringBuilder.toString().length()>10){
+        }else if (stringBuilder.toString().length()>20){
             tvResult.getText().clear();
             Toast.makeText(this,"Không phải định dạng biển số xe",Toast.LENGTH_SHORT).show();
         }else {

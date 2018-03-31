@@ -1,46 +1,36 @@
+
 package com.example.dong.kiemsoatxequansu.data.model;
 
-import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Dong on 08-Mar-18.
- */
+import io.objectbox.annotation.Entity;
+import io.objectbox.annotation.Id;
 
+@Entity
 public class Vehicle {
-    private int id;
-    private String name;
-    private List<Matter> matterList;
+    @Id( assignable = true )
+    @SerializedName("Id_Vehicle")
+    @Expose
+    private long idVehicle;
+    @SerializedName("Name_Vehicle")
+    @Expose
+    private String nameVehicle;
 
-    public Vehicle(int id, String name, List<Matter> matterList) {
-        this.id = id;
-        this.name = name;
-        this.matterList = matterList;
+    public long getIdVehicle() {
+        return idVehicle;
     }
 
-    public Vehicle() {
+    public void setIdVehicle(long idVehicle) {
+        this.idVehicle = idVehicle;
     }
 
-    public int getId() {
-        return id;
+    public String getNameVehicle() {
+        return nameVehicle;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setNameVehicle(String nameVehicle) {
+        this.nameVehicle = nameVehicle;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Matter> getMatterList() {
-        return matterList;
-    }
-
-    public void setMatterList(List<Matter> matterList) {
-        this.matterList = matterList;
-    }
 }

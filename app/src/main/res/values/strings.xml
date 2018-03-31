@@ -9,7 +9,17 @@
     <string name="select_type_car">Chọn Loại Xe</string>
     <string name="select_car">Chọn Xe</string>
     <string name="search">Tìm Kiếm</string>
-    <string name="detail_part">Chi Tiết Phụ Tùng</string>
-    <string name="select_part">Chọn Công Tác</string>
+    <string name="detail_part">Chọn Công Tác Con</string>
+    <string name="select_part">Chọn Nhóm Công Tác</string>
     <string name="camera_permission_error">Camera Permission Error</string>
+
+
+    <string name="id">Mã phụ tùng:</string>
+    <string name="name">Tên phụ tùng:</string>
+    <string name="unit">Đơn vị tính:</string>
+    <string name="quantity">Số lượng:</string>
+    <string name="price">Giá:</string>
+    <string name="close">Đóng</string>
+    <string name="detail_specification">Chi Tiết Phụ Tùng</string>
+
 </resources>

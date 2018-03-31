@@ -1,79 +1,104 @@
+
 package com.example.dong.kiemsoatxequansu.data.model;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import io.objectbox.relation.ToOne;
 
-/**
- * Created by DONG on 31-Oct-17.
- */
 @Entity
 public class Specification {
     @Id( assignable = true )
-    long Id;
-
-    String Ten;
-    String QuyCach;
-    String DVT;
-    String SoLuong;
-    String DonGia;
-
-    public Specification() {
-    }
-
-    public Specification(long id, String ten, String quyCach, String DVT, String soLuong, String donGia) {
-        Id = id;
-        Ten = ten;
-        QuyCach = quyCach;
-        this.DVT = DVT;
-        SoLuong = soLuong;
-        DonGia = donGia;
-    }
+    @SerializedName("Id")
+    @Expose
+    private long id;
+    @SerializedName("Name")
+    @Expose
+    private String name;
+    @SerializedName("Unit")
+    @Expose
+    private String unit;
+    @SerializedName("Quantity")
+    @Expose
+    private float quantity;
+    @SerializedName("Price")
+    @Expose
+    private Integer price;
+    @SerializedName("Id_Vehicle")
+    @Expose
+    private Integer idVehicle;
+    @SerializedName("Id_Matter")
+    @Expose
+    private Integer idMatter;
+    @SerializedName("Id_Child_Matter")
+    @Expose
+    private Integer idChildMatter;
 
     public long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(long id) {
-        Id = id;
+        this.id = id;
     }
 
-    public String getTen() {
-        return Ten;
+    public String getName() {
+        return name;
     }
 
-    public void setTen(String ten) {
-        Ten = ten;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getQuyCach() {
-        return QuyCach;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setQuyCach(String quyCach) {
-        QuyCach = quyCach;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
-    public String getDVT() {
-        return DVT;
+    public float getQuantity() {
+        return quantity;
     }
 
-    public void setDVT(String DVT) {
-        this.DVT = DVT;
+    public void setQuantity(float quantity) {
+        this.quantity = quantity;
     }
 
-    public String getSoLuong() {
-        return SoLuong;
+    public Integer getPrice() {
+        return price;
     }
 
-    public void setSoLuong(String soLuong) {
-        SoLuong = soLuong;
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
-    public String getDonGia() {
-        return DonGia;
+    public Integer getIdVehicle() {
+        return idVehicle;
     }
 
-    public void setDonGia(String donGia) {
-        DonGia = donGia;
+    public void setIdVehicle(Integer idVehicle) {
+        this.idVehicle = idVehicle;
     }
+
+    public Integer getIdMatter() {
+        return idMatter;
+    }
+
+    public void setIdMatter(Integer idMatter) {
+        this.idMatter = idMatter;
+    }
+
+    public Integer getIdChildMatter() {
+        return idChildMatter;
+    }
+
+    public void setIdChildMatter(Integer idChildMatter) {
+        this.idChildMatter = idChildMatter;
+    }
+
+
 }
