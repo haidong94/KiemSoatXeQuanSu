@@ -6,21 +6,20 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.example.dong.kiemsoatxequansu.app.App;
+import com.example.dong.kiemsoatxequansu.data.model.DetailMatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.Matter;
 import com.example.dong.kiemsoatxequansu.data.model.MatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.Specification;
+import com.example.dong.kiemsoatxequansu.data.model.SubMatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.Vehicle;
 import com.example.dong.kiemsoatxequansu.utils.TransactionTime;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,15 +31,21 @@ import io.objectbox.BoxStore;
  */
 
 public class ObjectBoxImporter {
-    Resources resources;
-    TransactionTime transactionTime;
-    BoxStore boxStore;
-    Box<Vehicle> vihicleBox;
-    Box<Matter> matterBox;
-    Box<MatterChild> matterChildBox;
-    Box<Specification> specificationBox;
-    Activity activity;
+    private Resources resources;
+    private TransactionTime transactionTime;
+    private static BoxStore boxStore;
+    private Box<Vehicle> vihicleBox;
+    private Box<Matter> matterBox;
+    private Box<MatterChild> matterChildBox;
+    private Box<Specification> specificationBox;
+    private Box<DetailMatterChild> detailMatterChildBox;
+    private Box<SubMatterChild> subMatterChildBox;
+    private Activity activity;
 
+    public static BoxStore getInstance(){
+        return boxStore;
+
+    }
     public ObjectBoxImporter(Resources resources, Activity activity) {
         this.resources = resources;
         this.activity = activity;
@@ -49,73 +54,146 @@ public class ObjectBoxImporter {
         matterBox = boxStore.boxFor(Matter.class);
         matterChildBox = boxStore.boxFor(MatterChild.class);
         specificationBox = boxStore.boxFor(Specification.class);
+        detailMatterChildBox = boxStore.boxFor(DetailMatterChild.class);
+        subMatterChildBox = boxStore.boxFor(SubMatterChild.class);
     }
 
-    public void importFromJson() throws FileNotFoundException {
-        File sdcard = Environment.getExternalStorageDirectory();
+    public void importFromJson() {
+        try {
+            File sdcard = Environment.getExternalStorageDirectory();
+            // transaction timer
+            transactionTime = new TransactionTime(System.currentTimeMillis());
+
+            //file vehicle
+            File fileVehicle = new File(sdcard, "vehicle.txt");
+            if (fileVehicle.exists()) {
+                String getVehicleFromFile = readTextFromFile(fileVehicle);
+                List<Vehicle> vihicleList = convertStringToObject(getVehicleFromFile);
+                vihicleBox.put(vihicleList);
+            }
 
 
-        // transaction timer
+            //file matter
+            File fileMatter = new File(sdcard, "matter.txt");
+            if (fileMatter.exists()) {
+                String getMatterFromFile = readTextFromFile(fileMatter);
+                List<Matter> matterList = convertStringToObjectMatter(getMatterFromFile);
+                matterBox.put(matterList);
+            }
 
-        transactionTime = new TransactionTime(System.currentTimeMillis());
+            //file matter_child
+            File fileMatterChild = new File(sdcard, "matter_child.txt");
+            if (fileMatterChild.exists()) {
+                String getMatterChildFromFile = readTextFromFile(fileMatterChild);
+                List<MatterChild> matterChildList = convertStringToObjectMatterChild(getMatterChildFromFile);
+                matterChildBox.put(matterChildList);
+            }
 
-        //file vehicle
-        File fileVehicle = new File(sdcard, "vehicle.txt");
-        String getVehicleFromFile = readTextFromFile(fileVehicle);
-        List<Vehicle> vihicleList = convertStringToObject(getVehicleFromFile);
-        vihicleBox.put(vihicleList);
+            //file specification
+            File fileSpecification = new File(sdcard, "specification.txt");
+            if (fileSpecification.exists()) {
+                String getSpecificationFromFile = readTextFromFile(fileSpecification);
+                List<Specification> specificationList = convertStringToObjectSpeccification(getSpecificationFromFile);
+                specificationBox.put(specificationList);
+            }
 
 
-        //file matter
-        File fileMatter = new File(sdcard, "matter.txt");
-        String getMatterFromFile = readTextFromFile(fileMatter);
-        List<Matter> matterList = convertStringToObjectMatter(getMatterFromFile);
-        matterBox.put(matterList);
+            //file detail_matter_child
+            File fileDetailMatterChild = new File(sdcard, "detail_matter_child.txt");
+            if (fileDetailMatterChild.exists()) {
+                String getDetailMatterChild = readTextFromFile(fileDetailMatterChild);
+                List<DetailMatterChild> detailMatterChildList = convertStringToObjectDetailMatterChild(getDetailMatterChild);
+                detailMatterChildBox.put(detailMatterChildList);
+            }
 
-        //file matter_child
-        File fileMatterChild = new File(sdcard, "matter_child.txt");
-        String getMatterChildFromFile = readTextFromFile(fileMatterChild);
-        List<MatterChild> matterChildList = convertStringToObjectMatterChild(getMatterChildFromFile);
-        matterChildBox.put(matterChildList);
+            //file sub_matter_child
+            File fileSubMatterChild = new File(sdcard, "sub_matter_child.txt");
+            if (fileMatterChild.exists()) {
+                String getSubMatterChild = readTextFromFile(fileSubMatterChild);
+                List<SubMatterChild> subMatterChildList = convertStringToObjectSubMatterChild(getSubMatterChild);
+                subMatterChildBox.put(subMatterChildList);
+            }
 
-        //file specification
-        File fileSpecification = new File(sdcard, "specification.txt");
-        String getSpecificationFromFile = readTextFromFile(fileSpecification);
-        List<Specification> specificationList = convertStringToObjectSpeccification(getSpecificationFromFile);
-        specificationBox.put(specificationList);
+            transactionTime.setEnd(System.currentTimeMillis());
+            Log.d("ObjectBox", "createAllFromJson Task completed in " + transactionTime.getDuration() + "ms");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        transactionTime.setEnd(System.currentTimeMillis());
-        Log.d("ObjectBox", "createAllFromJson Task completed in " + transactionTime.getDuration() + "ms");
+    }
+    /**
+     * Lấy danh sách các chi tiết con từ file
+     * Created_by hhdong 05/02/2018
+     * @param getSubMatterChild tên file cần lấy
+     * @return danh sách các chi tiết
+     */
+    private List<SubMatterChild> convertStringToObjectSubMatterChild(String getSubMatterChild) {
+        SubMatterChild[] gsonObj = new Gson().fromJson(getSubMatterChild, SubMatterChild[].class);
+        return Arrays.asList(gsonObj);
+    }
+
+    /**
+     * Lấy danh sách các chi tiết con từ file
+     * Created_by hhdong 05/02/2018
+     * @param getDetailMatterChild tên file cần lấy
+     * @return danh sách các chi tiết
+     */
+    private List<DetailMatterChild> convertStringToObjectDetailMatterChild(String getDetailMatterChild) {
+        DetailMatterChild[] gsonObj = new Gson().fromJson(getDetailMatterChild, DetailMatterChild[].class);
+        return Arrays.asList(gsonObj);
     }
 
     /**
      * Lấy danh sách các chi tiết từ file
+     * Created_by hhdong 05/02/2018
      * @param getTextFromFile tên file cần lấy
-     * @return
+     * @return danh sách các chi tiết
      */
     private List<Specification> convertStringToObjectSpeccification(String getTextFromFile) {
         Specification[] gsonObj = new Gson().fromJson(getTextFromFile, Specification[].class);
-        List<Specification> list = Arrays.asList(gsonObj);
-        return list;
+        return Arrays.asList(gsonObj);
     }
 
+    /**
+     * Lấy danh sách các vật liệu con từ file
+     * Created_by hhdong 05/02/2018
+     * @param getTextFromFile tên file cần lấy
+     * @return danh sách các vật liệu con
+     */
     private List<MatterChild> convertStringToObjectMatterChild(String getTextFromFile) {
         MatterChild[] gsonObj = new Gson().fromJson(getTextFromFile, MatterChild[].class);
-        List<MatterChild> list = Arrays.asList(gsonObj);
-        return list;
+        return Arrays.asList(gsonObj);
     }
+
+    /**
+     * Lấy danh sách các Vật liệu từ file
+     * Created_by hhdong 05/02/2018
+     * @param getTextFromFile tên file cần lấy
+     * @return danh sách các vật liệu
+     */
     private List<Matter> convertStringToObjectMatter(String getTextFromFile) {
         Matter[] gsonObj = new Gson().fromJson(getTextFromFile, Matter[].class);
-        List<Matter> list = Arrays.asList(gsonObj);
-        return list;
+        return Arrays.asList(gsonObj);
     }
 
+
+    /**
+     * Lấy danh sách các xe từ file
+     * Created_by hhdong 05/04/2018
+     * @param getTextFromFile tên file cần lấy
+     * @return danh sách các xe
+     */
     private List<Vehicle> convertStringToObject(String getTextFromFile) {
         Vehicle[] gsonObj = new Gson().fromJson(getTextFromFile, Vehicle[].class);
-        List<Vehicle> list = Arrays.asList(gsonObj);
-        return list;
+        return Arrays.asList(gsonObj);
     }
 
+    /**
+     * Đọc file từ điện thoại sang string
+     *
+     * @param file file cần đọc
+     * @return string
+     */
     private String readTextFromFile(File file) {
         StringBuilder text = new StringBuilder();
 

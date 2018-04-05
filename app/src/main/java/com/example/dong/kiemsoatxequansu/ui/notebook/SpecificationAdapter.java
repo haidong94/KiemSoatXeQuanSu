@@ -1,6 +1,6 @@
 package com.example.dong.kiemsoatxequansu.ui.notebook;
 
-import android.app.Dialog;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
@@ -10,12 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dong.kiemsoatxequansu.R;
 import com.example.dong.kiemsoatxequansu.data.model.Specification;
+import com.example.dong.kiemsoatxequansu.utils.Commons;
 
 import java.util.List;
 
@@ -25,10 +25,9 @@ import java.util.List;
 
 public class SpecificationAdapter extends RecyclerView.Adapter<SpecificationAdapter.RecyclerViewHoder> {
     private List<Specification> list;
-    private Integer[] listImage;
     private Context context;
 
-    public SpecificationAdapter(List<Specification> list, Context context) {
+    SpecificationAdapter(List<Specification> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -44,7 +43,7 @@ public class SpecificationAdapter extends RecyclerView.Adapter<SpecificationAdap
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void onBindViewHolder(RecyclerViewHoder holder, final int position) {
+    public void onBindViewHolder(RecyclerViewHoder holder, @SuppressLint("RecyclerView") final int position) {
         holder.tvId.setText(String.valueOf(list.get(position).getId()));
         holder.tvName.setText(list.get(position).getName());
 
@@ -52,49 +51,64 @@ public class SpecificationAdapter extends RecyclerView.Adapter<SpecificationAdap
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
-               try {
-                   new Handler().postDelayed(new Runnable() {
-                       @Override
-                       public void run() {
-                           LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-                           View dialogView = inflater.inflate(R.layout.dialog_specification, null);
-                           // set the custom dialog components - text, image and button
-                           TextView tvId = dialogView.findViewById(R.id.tvId);
-                           TextView tvName = dialogView.findViewById(R.id.tvName);
-                           TextView tvUnit = dialogView.findViewById(R.id.tvUnit);
-                           TextView tvQuantity = dialogView.findViewById(R.id.tvQuantity);
-                           TextView tvPrice = dialogView.findViewById(R.id.tvPrice);
+                try {
+                    new Handler().postDelayed(new Runnable() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void run() {
+                            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                            assert inflater != null;
+                            @SuppressLint("InflateParams") View dialogView = inflater.inflate(R.layout.dialog_specification, null);
+                            // set the custom dialog components - text, image and button
+                            TextView tvId = dialogView.findViewById(R.id.tvId);
+                            TextView tvName = dialogView.findViewById(R.id.tvName);
+                            TextView tvUnit = dialogView.findViewById(R.id.tvUnit);
+                            TextView tvQuantity = dialogView.findViewById(R.id.tvQuantity);
+                            TextView tvPrice = dialogView.findViewById(R.id.tvPrice);
 
-                           AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-                           dialogBuilder.setView(dialogView);
-                           dialogBuilder.setIcon(context.getDrawable(R.drawable.ic_infor));
-                           dialogBuilder.setCancelable(false);
-                           //set value
-                           tvId.setText(String.valueOf(list.get(position).getId()));
-                           tvName.setText(list.get(position).getName());
-                           tvUnit.setText(list.get(position).getUnit());
-                           tvQuantity.setText(String.valueOf(list.get(position).getQuantity()));
-                           tvPrice.setText(String.valueOf(list.get(position).getPrice()));
+                            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                            dialogBuilder.setView(dialogView);
+                            dialogBuilder.setIcon(context.getDrawable(R.drawable.ic_infor));
+                            dialogBuilder.setCancelable(false);
+                            //set value
+                            tvId.setText(String.valueOf(list.get(position).getId()));
+                            tvName.setText(list.get(position).getName());
+                            tvUnit.setText(list.get(position).getUnit());
+                            tvQuantity.setText(String.valueOf(list.get(position).getQuantity()));
+                            tvPrice.setText(Commons.convertMoneytoVND(list.get(position).getPrice()) + " " + context.getString(R.string.vnd));
 
-                           final AlertDialog dialog = dialogBuilder.create();
-                           dialog.show();
+                            final AlertDialog dialog = dialogBuilder.create();
+                            dialog.show();
 
-                           TextView tvClose = dialogView.findViewById(R.id.tvClose);
-                           tvClose.setOnClickListener(new View.OnClickListener() {
-                               @Override
-                               public void onClick(View v) {
-                                   dialog.dismiss();
-                               }
-                           });
-                       }
-                   },100);
+                            TextView tvClose = dialogView.findViewById(R.id.tvClose);
+                            tvClose.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.dismiss();
+                                }
+                            });
+                        }
+                    }, 100);
 
-               } catch (Exception e) {
-                  e.printStackTrace();
-               }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
         });
+
+    }
+
+    public void swap(List<Specification> datas) {
+        if (datas == null || datas.size() == 0) {
+            Toast.makeText(context, "Không có phụ tùng", Toast.LENGTH_LONG).show();
+        }
+        if (list != null && list.size() > 0) {
+            list.clear();
+
+        }
+        list.addAll(datas);
+        notifyDataSetChanged();
 
     }
 
@@ -106,10 +120,10 @@ public class SpecificationAdapter extends RecyclerView.Adapter<SpecificationAdap
     public class RecyclerViewHoder extends RecyclerView.ViewHolder {
         public TextView tvId, tvName;
 
-        public RecyclerViewHoder(View itemView) {
+        RecyclerViewHoder(View itemView) {
             super(itemView);
-            tvId = (TextView) itemView.findViewById(R.id.tvId);
-            tvName = (TextView) itemView.findViewById(R.id.tvName);
+            tvId = itemView.findViewById(R.id.tvId);
+            tvName = itemView.findViewById(R.id.tvName);
         }
     }
 }

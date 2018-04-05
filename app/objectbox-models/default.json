@@ -4,22 +4,6 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:822424854827962400",
-      "lastPropertyId": "2:1245226592059802091",
-      "name": "CongTac",
-      "properties": [
-        {
-          "id": "1:2057833844642155314",
-          "name": "Id"
-        },
-        {
-          "id": "2:1245226592059802091",
-          "name": "Name"
-        }
-      ],
-      "relations": []
-    },
-    {
       "id": "9:7530037555528579209",
       "lastPropertyId": "7:6850360615115394446",
       "name": "Matter",
@@ -114,9 +98,49 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "15:4666696525144843727",
+      "lastPropertyId": "3:6859498772917126025",
+      "name": "DetailMatterChild",
+      "properties": [
+        {
+          "id": "1:851541681230143958",
+          "name": "idVehicle"
+        },
+        {
+          "id": "2:8234153598724411304",
+          "name": "idSubMatterChild"
+        },
+        {
+          "id": "3:6859498772917126025",
+          "name": "idDetailMatterChild"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "16:4017619414161500516",
+      "lastPropertyId": "3:903300827986277036",
+      "name": "SubMatterChild",
+      "properties": [
+        {
+          "id": "1:6742922704947828132",
+          "name": "idSubMatterChild"
+        },
+        {
+          "id": "2:2899918967366128728",
+          "name": "nameSubMatterChild"
+        },
+        {
+          "id": "3:903300827986277036",
+          "name": "idMatterChild"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "14:4119027618994216746",
+  "lastEntityId": "16:4017619414161500516",
   "lastIndexId": "4:1432531296935922147",
   "lastRelationId": "12:3988277022806632609",
   "lastSequenceId": "0:0",
@@ -131,7 +155,8 @@
     1695166152655119753,
     537574434498702609,
     7968902169673015484,
-    8640424927935928352
+    8640424927935928352,
+    822424854827962400
   ],
   "retiredIndexUids": [
     2171966352111807211,
@@ -184,7 +209,9 @@
     1299001376306416376,
     3315448111704090352,
     4299212707277566993,
-    8999495466418976014
+    8999495466418976014,
+    2057833844642155314,
+    1245226592059802091
   ],
   "retiredRelationUids": [
     7305842890382331854,
