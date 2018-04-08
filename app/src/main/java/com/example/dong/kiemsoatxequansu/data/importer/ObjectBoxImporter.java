@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.dong.kiemsoatxequansu.app.App;
 import com.example.dong.kiemsoatxequansu.data.model.DetailMatterChild;
+import com.example.dong.kiemsoatxequansu.data.model.DetailSubMatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.Matter;
 import com.example.dong.kiemsoatxequansu.data.model.MatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.Specification;
@@ -38,6 +39,7 @@ public class ObjectBoxImporter {
     private Box<Matter> matterBox;
     private Box<MatterChild> matterChildBox;
     private Box<Specification> specificationBox;
+    private Box<DetailSubMatterChild> detailSubMatterChildBox;
     private Box<DetailMatterChild> detailMatterChildBox;
     private Box<SubMatterChild> subMatterChildBox;
     private Activity activity;
@@ -54,6 +56,7 @@ public class ObjectBoxImporter {
         matterBox = boxStore.boxFor(Matter.class);
         matterChildBox = boxStore.boxFor(MatterChild.class);
         specificationBox = boxStore.boxFor(Specification.class);
+        detailSubMatterChildBox = boxStore.boxFor(DetailSubMatterChild.class);
         detailMatterChildBox = boxStore.boxFor(DetailMatterChild.class);
         subMatterChildBox = boxStore.boxFor(SubMatterChild.class);
     }
@@ -98,6 +101,14 @@ public class ObjectBoxImporter {
             }
 
 
+            //file detail_submatter_child
+            File fileDetailSubMatterChild = new File(sdcard, "detail_submatter_child.txt");
+            if (fileDetailSubMatterChild.exists()) {
+                String getDetailSubMatterChild = readTextFromFile(fileDetailSubMatterChild);
+                List<DetailSubMatterChild> detailSubMatterChildList = convertStringToObjectDetailSubMatterChild(getDetailSubMatterChild);
+                detailSubMatterChildBox.put(detailSubMatterChildList);
+            }
+
             //file detail_matter_child
             File fileDetailMatterChild = new File(sdcard, "detail_matter_child.txt");
             if (fileDetailMatterChild.exists()) {
@@ -135,9 +146,14 @@ public class ObjectBoxImporter {
     /**
      * Lấy danh sách các chi tiết con từ file
      * Created_by hhdong 05/02/2018
-     * @param getDetailMatterChild tên file cần lấy
+     * @param getDetailSubMatterChild tên file cần lấy
      * @return danh sách các chi tiết
      */
+    private List<DetailSubMatterChild> convertStringToObjectDetailSubMatterChild(String getDetailSubMatterChild) {
+        DetailSubMatterChild[] gsonObj = new Gson().fromJson(getDetailSubMatterChild, DetailSubMatterChild[].class);
+        return Arrays.asList(gsonObj);
+    }
+
     private List<DetailMatterChild> convertStringToObjectDetailMatterChild(String getDetailMatterChild) {
         DetailMatterChild[] gsonObj = new Gson().fromJson(getDetailMatterChild, DetailMatterChild[].class);
         return Arrays.asList(gsonObj);

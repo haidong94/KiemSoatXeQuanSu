@@ -3,6 +3,7 @@ package com.example.dong.kiemsoatxequansu.ui.notebook;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -19,12 +20,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dong.kiemsoatxequansu.R;
 import com.example.dong.kiemsoatxequansu.app.App;
 import com.example.dong.kiemsoatxequansu.data.importer.ObjectBoxImporter;
 import com.example.dong.kiemsoatxequansu.data.model.DetailMatterChild;
+import com.example.dong.kiemsoatxequansu.data.model.DetailSubMatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.DetailMatterChild_;
+import com.example.dong.kiemsoatxequansu.data.model.DetailSubMatterChild_;
 import com.example.dong.kiemsoatxequansu.data.model.Matter;
 import com.example.dong.kiemsoatxequansu.data.model.MatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.MatterChild_;
@@ -61,6 +65,7 @@ public class SoTayActivity extends AppCompatActivity {
 
     private Box<Specification> specificationBox; //Bảng chi tiết phụ tùng
 
+    private Box<DetailSubMatterChild> detailSubMatterChildBox;//Bảng chung liên kết giữa bảng Vehicle và bảng SubMatterChild
     private Box<DetailMatterChild> detailMatterChildBox;//Bảng chung liên kết giữa bảng Vehicle và bảng SubMatterChild
 
     private Box<SubMatterChild> subMatterChildBox; // Bảng SubMatterChild (bảng con của bảng MatterChild)
@@ -73,7 +78,7 @@ public class SoTayActivity extends AppCompatActivity {
 
     private Button btnSearch;
 
-    private Spinner spinVehicle, spinMatter, spinMatterChild,spinSubMatterChild;
+    private Spinner spinVehicle, spinMatter, spinMatterChild, spinSubMatterChild;
 
     private RecyclerView recyclerView;
 
@@ -81,9 +86,11 @@ public class SoTayActivity extends AppCompatActivity {
 
     RecyclerView.LayoutManager layout;
 
-    private List<Specification> listSpecification; // danh sách các chi tiết phụ tùng
+    private List<Specification> listSpecification=new ArrayList<>(); // danh sách các chi tiết phụ tùng
 
-    private ArrayList<String> listNameSubMatterChild=new ArrayList<>(); //danh sách tên công tác con
+    private ArrayList<String> listNameMatterChild = new ArrayList<>(); //danh sách tên công tác con
+    private ArrayAdapter<String> adapterMatterChild; //adapter cho spinMatterChild
+    private ArrayList<String> listNameSubMatterChild = new ArrayList<>(); //danh sách tên công tác con của con
     private ArrayAdapter<String> adapterSubMatterChild; //adapter cho spinSubMatterChild
 
     private TransactionTime transactionTime; //Thời gian thực
@@ -100,6 +107,7 @@ public class SoTayActivity extends AppCompatActivity {
             matterBox = boxStore.boxFor(Matter.class);
             matterChildBox = boxStore.boxFor(MatterChild.class);
             specificationBox = boxStore.boxFor(Specification.class);
+            detailSubMatterChildBox = boxStore.boxFor(DetailSubMatterChild.class);
             detailMatterChildBox = boxStore.boxFor(DetailMatterChild.class);
             subMatterChildBox = boxStore.boxFor(SubMatterChild.class);
 
@@ -117,12 +125,14 @@ public class SoTayActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("ResourceType")
     private void setUpSpiner() {
         try {
             //vehicle
             String[] listNameVehicle = vehicleBox.query().build().property(Vehicle_.nameVehicle).findStrings();
             ArrayAdapter<String> adapterVehicle = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listNameVehicle);
             spinVehicle.setAdapter(adapterVehicle);
+         //   spinVehicle.setPopupBackgroundResource(getResources().getColor(R.color.colorWhile));
 
             //matter
             String[] listNameMatter = matterBox.query().build().property(Matter_.nameMatter).findStrings();
@@ -130,16 +140,7 @@ public class SoTayActivity extends AppCompatActivity {
             spinMatter.setAdapter(adapterMatter);
 
             //matter child
-            String[] listNameMatterChild = matterChildBox.query().build().property(MatterChild_.nameChildMatter).findStrings();
-            ArrayAdapter<String> adapterMatterChild = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listNameMatterChild);
-            spinMatterChild.setAdapter(adapterMatterChild);
-
-     //       spinSubMatterChild
-//            matter child
-  //          int[] listDetailMatterChild = detailMatterChildBox.query().build().property(DetailMatterChild_.idVehicle).findInts();
-//            Integer[] what = Arrays.stream( listDetailMatterChild ).boxed().toArray( Integer[]::new );
-//            ArrayAdapter<Integer> adapterDetailMatterChild = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_dropdown_item, int_numbers);
-//            spinSubMatterChild.setAdapter(adapterDetailMatterChild);
+            setUpSpinerMatterChild();
 
             //specification
             listSpecification = specificationBox.query().build().find();
@@ -156,7 +157,7 @@ public class SoTayActivity extends AppCompatActivity {
 
     /**
      * Sự kiện các control
-     * Created_by hhdong 05/04/2018
+     * Created by Dong on 06-Apr-18
      */
     private void addEvent() {
         spinVehicle.setOnItemSelectedListener(onItemListener);
@@ -176,17 +177,21 @@ public class SoTayActivity extends AppCompatActivity {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 try {
-                    if (Math.abs(verticalOffset)-appBarLayout.getTotalScrollRange() == 0)
-                    {
+                    if (Math.abs(verticalOffset) - appBarLayout.getTotalScrollRange() == 0) {
                         //  Collapsed
                         tvTitleNoteBook.setText(spinVehicle.getSelectedItem().toString());
-                        btnSearch.setText(spinMatter.getSelectedItem().toString()+" - "+spinMatterChild.getSelectedItem().toString()+" - "+spinSubMatterChild.getSelectedItem().toString());
                         btnSearch.setEnabled(false);
                         tvTitleNoteBook.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_car, 0, 0, 0);
                         btnSearch.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tool_car, 0, 0, 0);
-                    }
-                    else
-                    {
+
+                        //Nếu xe có các vật liệu con
+                        if (spinMatterChild.isEnabled()) {
+                            btnSearch.setText(spinMatter.getSelectedItem().toString() + " - " + spinMatterChild.getSelectedItem().toString() + " - " + spinSubMatterChild.getSelectedItem().toString());
+                        } else {//Nếu xe không có vật liệu con
+                            btnSearch.setText(spinMatter.getSelectedItem().toString());
+
+                        }
+                    } else {
                         //Expanded
                         tvTitleNoteBook.setText(getResources().getString(R.string.notebook));
                         btnSearch.setText(getResources().getString(R.string.search));
@@ -195,7 +200,7 @@ public class SoTayActivity extends AppCompatActivity {
                         btnSearch.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     }
                 } catch (Exception e) {
-                   e.printStackTrace();
+                    e.printStackTrace();
                 }
 
             }
@@ -204,10 +209,10 @@ public class SoTayActivity extends AppCompatActivity {
     }
 
     /**
-     * Lắng nghe thay đổi khi chọn spinner nguyên liệu con
+     * Lắng nghe thay đổi  spinner nguyên liệu con để thay đổi spin cháu
      * Created_by hhdong 05/04/2018
      */
-    private  AdapterView.OnItemSelectedListener onItemMatterChildListener=new AdapterView.OnItemSelectedListener() {
+    private AdapterView.OnItemSelectedListener onItemMatterChildListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             //Lấy xe được chọn
@@ -222,10 +227,10 @@ public class SoTayActivity extends AppCompatActivity {
             //xóa danh sách cũ
             listNameSubMatterChild.clear();
 
-            int[] listIdSubMatterChild=detailMatterChildBox.query()
-                    .equal(DetailMatterChild_.idVehicle, vehicle != null ? vehicle.getIdVehicle() : 0)
+            int[] listIdSubMatterChild = detailSubMatterChildBox.query()
+                    .equal(DetailSubMatterChild_.idVehicle, vehicle != null ? vehicle.getIdVehicle() : 0)
                     .build()
-                    .property(DetailMatterChild_.idSubMatterChild).findInts();
+                    .property(DetailSubMatterChild_.idSubMatterChild).findInts();
 
             for (int aListIdSubMatterChild : listIdSubMatterChild) {
                 //Tìm subMatterchild theo id và theo idMatterChild
@@ -237,13 +242,12 @@ public class SoTayActivity extends AppCompatActivity {
                 }
 
             }
-
+            adapterSubMatterChild = new ArrayAdapter<>(SoTayActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameSubMatterChild);
+            spinSubMatterChild.setAdapter(adapterSubMatterChild);
             transactionTime.setEnd(System.currentTimeMillis());
             Log.d("ObjectBox", "createAllFromJson Task completed in " + transactionTime.getDuration() + "ms");
 
 
-            adapterSubMatterChild = new ArrayAdapter<>(SoTayActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameSubMatterChild);
-            spinSubMatterChild.setAdapter(adapterSubMatterChild);
         }
 
         @Override
@@ -269,27 +273,38 @@ public class SoTayActivity extends AppCompatActivity {
                 String nameMatter = spinMatter.getSelectedItem().toString();
                 Matter matter = matterBox.query().equal(Matter_.nameMatter, nameMatter).build().findFirst();
 
-                //Lấy tên nguyên vật liệu con để tìm id của nguyên vật liệu con đó
-                String nameMatterChild = spinMatterChild.getSelectedItem().toString();
-                MatterChild matterChild = matterChildBox.query().equal(MatterChild_.nameChildMatter, nameMatterChild).build().findFirst();
 
                 List<Specification> data;
                 if (spinMatterChild.isEnabled()) {
+                    //Lấy tên nguyên vật liệu con để tìm id của nguyên vật liệu con đó
+                    String nameMatterChild = spinMatterChild.getSelectedItem().toString();
+                    MatterChild matterChild = matterChildBox.query().equal(MatterChild_.nameChildMatter, nameMatterChild).build().findFirst();
+
+                    //Lấy tên nguyên vật liệu con để tìm id của nguyên vật liệu con đó
+                    String nameSubMatterChild = spinSubMatterChild.getSelectedItem().toString();
+                    SubMatterChild subMatterChild = subMatterChildBox.query().equal(SubMatterChild_.nameSubMatterChild, nameSubMatterChild).build().findFirst();
                     data = specificationBox.query()
                             .equal(Specification_.idVehicle, vehicle != null ? vehicle.getIdVehicle() : 0)
                             .equal(Specification_.idMatter, matter != null ? matter.getIdMatter() : 0)
                             .equal(Specification_.idChildMatter, matterChild != null ? matterChild.getIdChildMatter() : 0)
+                            .equal(Specification_.idSubMatterChild, subMatterChild != null ? subMatterChild.getIdSubMatterChild() : 0)
                             .build().find();
-                }else {
+                } else {
                     data = specificationBox.query()
                             .equal(Specification_.idVehicle, vehicle != null ? vehicle.getIdVehicle() : 0)
                             .equal(Specification_.idMatter, matter != null ? matter.getIdMatter() : 0)
                             .build().find();
                 }
-                //notifidata in recycleview
-                specificationAdapter.swap(data);
+
+                //Kiểm tra dữ liệu không có
+                if (data.isEmpty()) {
+                    Toast.makeText(SoTayActivity.this, "Không có phụ tùng", Toast.LENGTH_LONG).show();
+                } else {
+                    //notifidata in recycleview
+                    specificationAdapter.swap(data);
+                }
             } catch (Exception e) {
-               e.printStackTrace();
+                e.printStackTrace();
             }
 
         }
@@ -307,10 +322,16 @@ public class SoTayActivity extends AppCompatActivity {
             if (position == 0) { //nếu là vị trí 1 (1 là vật liệu chính) thì hiện spinnerMatterChild
                 spinMatterChild.setEnabled(true);
                 spinSubMatterChild.setEnabled(true);
+                //Lấy xe được chọn
+                transactionTime = new TransactionTime(System.currentTimeMillis());
+                setUpSpinerMatterChild();
+                transactionTime.setEnd(System.currentTimeMillis());
+                Log.d("ObjectBox", "createAllFromJson Task completed in " + transactionTime.getDuration() + "ms");
             } else { //ẩn spinnerMatterChild
                 spinMatterChild.setEnabled(false);
                 spinSubMatterChild.setEnabled(false);
             }
+
         }
 
         @Override
@@ -328,43 +349,45 @@ public class SoTayActivity extends AppCompatActivity {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
             listSpecification.clear();
-            specificationAdapter.notifyDataSetChanged();
+            if(specificationAdapter!=null) {
+                specificationAdapter.notifyDataSetChanged();
+            }
             //Lấy xe được chọn
             transactionTime = new TransactionTime(System.currentTimeMillis());
             String nameVehicle = spinVehicle.getSelectedItem().toString();
             Vehicle vehicle = vehicleBox.query().equal(Vehicle_.nameVehicle, nameVehicle).build().findFirst();
 
-            //Lấy vật liệu con được chọn
-            String nameMaterChild = spinMatterChild.getSelectedItem().toString();
-            final MatterChild matterChild = matterChildBox.query().equal(MatterChild_.nameChildMatter, nameMaterChild).build().findFirst();
-
-            //xóa danh sách cũ
-            listNameSubMatterChild.clear();
-
-            int[] listIdSubMatterChild=detailMatterChildBox.query()
-                    .equal(DetailMatterChild_.idVehicle, vehicle != null ? vehicle.getIdVehicle() : 0)
-                    .build()
-                    .property(DetailMatterChild_.idSubMatterChild).findInts();
-
-            for (int aListIdSubMatterChild : listIdSubMatterChild) {
-                //Tìm subMatterchild theo id và theo idMatterChild
-                SubMatterChild subMatterChild = subMatterChildBox.query().equal(SubMatterChild_.idSubMatterChild, aListIdSubMatterChild)
-                        .equal(SubMatterChild_.idMatterChild, matterChild != null ? matterChild.getIdChildMatter() : 0)
-                        .build().findFirst();
-                if (subMatterChild != null) {
-                    listNameSubMatterChild.add(subMatterChild.getNameSubMatterChild());
+            //Nếu vật liệu con là hiển thị thì cập nhật spin con và spin cháu
+            if (spinMatterChild.isEnabled()) {
+                //Cập nhật spin cháu
+                String nameMaterChild = spinMatterChild.getSelectedItem().toString();
+                final MatterChild matterChild = matterChildBox.query().equal(MatterChild_.nameChildMatter, nameMaterChild).build().findFirst();
+                //xóa danh sách cũ
+                listNameSubMatterChild.clear();
+                int[] listIdSubMatterChild = detailSubMatterChildBox.query()
+                        .equal(DetailSubMatterChild_.idVehicle, vehicle != null ? vehicle.getIdVehicle() : 0)
+                        .build()
+                        .property(DetailSubMatterChild_.idSubMatterChild).findInts();
+                for (int aListIdSubMatterChild : listIdSubMatterChild) {
+                    //Tìm subMatterchild theo id và theo idMatterChild
+                    SubMatterChild subMatterChild = subMatterChildBox.query().equal(SubMatterChild_.idSubMatterChild, aListIdSubMatterChild)
+                            .equal(SubMatterChild_.idMatterChild, matterChild != null ? matterChild.getIdChildMatter() : 0)
+                            .build().findFirst();
+                    if (subMatterChild != null) {
+                        listNameSubMatterChild.add(subMatterChild.getNameSubMatterChild());
+                    }
                 }
+                adapterSubMatterChild = new ArrayAdapter<>(SoTayActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameSubMatterChild);
+                spinSubMatterChild.setAdapter(adapterSubMatterChild);
 
+
+                setUpSpinerMatterChild();
+
+                transactionTime.setEnd(System.currentTimeMillis());
+                Log.d("ObjectBox", "createAllFromJson Task completed in " + transactionTime.getDuration() + "ms");
             }
 
-            transactionTime.setEnd(System.currentTimeMillis());
-            Log.d("ObjectBox", "createAllFromJson Task completed in " + transactionTime.getDuration() + "ms");
 
-
-            adapterSubMatterChild = new ArrayAdapter<>(SoTayActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameSubMatterChild);
-            spinSubMatterChild.setAdapter(adapterSubMatterChild);
-
-            //  spinMatterChild.setEnabled(false); //ẩn công tác con
         }
 
         @Override
@@ -372,6 +395,39 @@ public class SoTayActivity extends AppCompatActivity {
 
         }
     };
+
+    private void setUpSpinerMatterChild() {
+        try {
+            String nameVehicle = spinVehicle.getSelectedItem().toString();
+            Vehicle vehicle = vehicleBox.query().equal(Vehicle_.nameVehicle, nameVehicle).build().findFirst();
+            String nameMater = spinMatter.getSelectedItem().toString();
+            final Matter matter = matterBox.query().equal(Matter_.nameMatter, nameMater).build().findFirst();
+
+            //xóa danh sách cũ
+            listNameMatterChild.clear();
+
+            int[] listIdMatterChild = detailMatterChildBox.query()
+                    .equal(DetailMatterChild_.idVehicle, vehicle != null ? vehicle.getIdVehicle() : 0)
+                    .equal(DetailMatterChild_.idMatter, matter != null ? matter.getIdMatter() : 0)
+                    .build()
+                    .property(DetailMatterChild_.idChildMatter)
+                    .findInts();
+            for(int aListIdMatterChild:listIdMatterChild){
+                //Tìm Matterchild theo id
+                MatterChild matterChild = matterChildBox.query()
+                        .equal(MatterChild_.idChildMatter, aListIdMatterChild)
+                        .build().findFirst();
+                if (matterChild != null) {
+                    listNameMatterChild.add(matterChild.getNameChildMatter());
+                }
+            }
+            adapterMatterChild = new ArrayAdapter<>(SoTayActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameMatterChild);
+            spinMatterChild.setAdapter(adapterMatterChild);
+        } catch (Exception e) {
+           e.printStackTrace();
+        }
+
+    }
 
     /**
      * Khai báo control
@@ -390,8 +446,6 @@ public class SoTayActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     /**

@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.dong.kiemsoatxequansu.R;
 import com.example.dong.kiemsoatxequansu.ui.notebook.SoTayActivity;
@@ -53,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+            }
+        });
+        cv_BienBanViPham.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,"Tính năng đang phát triển",Toast.LENGTH_SHORT).show();
             }
         });
 

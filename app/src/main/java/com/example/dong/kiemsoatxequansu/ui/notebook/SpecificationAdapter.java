@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +63,8 @@ public class SpecificationAdapter extends RecyclerView.Adapter<SpecificationAdap
                             // set the custom dialog components - text, image and button
                             TextView tvId = dialogView.findViewById(R.id.tvId);
                             TextView tvName = dialogView.findViewById(R.id.tvName);
+                            LinearLayout llStyle = dialogView.findViewById(R.id.llStyle);
+                            TextView tvStyle = dialogView.findViewById(R.id.tvStyle);
                             TextView tvUnit = dialogView.findViewById(R.id.tvUnit);
                             TextView tvQuantity = dialogView.findViewById(R.id.tvQuantity);
                             TextView tvPrice = dialogView.findViewById(R.id.tvPrice);
@@ -76,6 +79,12 @@ public class SpecificationAdapter extends RecyclerView.Adapter<SpecificationAdap
                             tvUnit.setText(list.get(position).getUnit());
                             tvQuantity.setText(String.valueOf(list.get(position).getQuantity()));
                             tvPrice.setText(Commons.convertMoneytoVND(list.get(position).getPrice()) + " " + context.getString(R.string.vnd));
+
+                            //Kiểm tra quy cách có null hay rỗng không? nếu có thì không hiển thị thông tin quy cách
+                            if(list.get(position).getStyle()!=null&&!list.get(position).getStyle().isEmpty()){
+                                llStyle.setVisibility(View.VISIBLE);
+                                tvStyle.setText(list.get(position).getStyle());
+                            }
 
                             final AlertDialog dialog = dialogBuilder.create();
                             dialog.show();

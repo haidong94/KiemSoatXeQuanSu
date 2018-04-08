@@ -20,12 +20,7 @@ public class MatterChild {
     @SerializedName("Name_Child_Matter")
     @Expose
     private String nameChildMatter;
-    @SerializedName("Id_Matter")
-    @Expose
-    private String idMatter;
-    @SerializedName("Id_Vehicle")
-    @Expose
-    private String idVehicle;
+
 
     public long getIdChildMatter() {
         return idChildMatter;
@@ -43,20 +38,5 @@ public class MatterChild {
         this.nameChildMatter = nameChildMatter;
     }
 
-    public String getIdMatter() {
-        return idMatter;
-    }
-
-    public void setIdMatter(String idMatter) {
-        this.idMatter = idMatter;
-    }
-
-    public String getIdVehicle() {
-        return idVehicle;
-    }
-
-    public void setIdVehicle(String idVehicle) {
-        this.idVehicle = idVehicle;
-    }
 
 }

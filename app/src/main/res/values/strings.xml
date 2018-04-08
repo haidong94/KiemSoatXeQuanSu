@@ -17,6 +17,7 @@
 
     <string name="id">Mã phụ tùng:</string>
     <string name="name">Tên phụ tùng:</string>
+    <string name="style">Quy cách:</string>
     <string name="unit">Đơn vị tính:</string>
     <string name="quantity">Số lượng:</string>
     <string name="price">Giá:</string>

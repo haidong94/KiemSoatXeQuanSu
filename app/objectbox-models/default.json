@@ -21,7 +21,7 @@
     },
     {
       "id": "10:4499041101582211031",
-      "lastPropertyId": "21:2376814384704946325",
+      "lastPropertyId": "23:4981861364469607111",
       "name": "Specification",
       "properties": [
         {
@@ -55,6 +55,14 @@
         {
           "id": "21:2376814384704946325",
           "name": "idChildMatter"
+        },
+        {
+          "id": "22:7279767629174765358",
+          "name": "idSubMatterChild"
+        },
+        {
+          "id": "23:4981861364469607111",
+          "name": "style"
         }
       ],
       "relations": []
@@ -87,21 +95,13 @@
         {
           "id": "2:2044885031507739314",
           "name": "nameChildMatter"
-        },
-        {
-          "id": "3:5857083296175365096",
-          "name": "idMatter"
-        },
-        {
-          "id": "4:7941781826703512834",
-          "name": "idVehicle"
         }
       ],
       "relations": []
     },
     {
       "id": "15:4666696525144843727",
-      "lastPropertyId": "3:6859498772917126025",
+      "lastPropertyId": "5:7609103459692320536",
       "name": "DetailMatterChild",
       "properties": [
         {
@@ -109,12 +109,16 @@
           "name": "idVehicle"
         },
         {
-          "id": "2:8234153598724411304",
-          "name": "idSubMatterChild"
-        },
-        {
           "id": "3:6859498772917126025",
           "name": "idDetailMatterChild"
+        },
+        {
+          "id": "4:2674365852878117026",
+          "name": "idChildMatter"
+        },
+        {
+          "id": "5:7609103459692320536",
+          "name": "idMatter"
         }
       ],
       "relations": []
@@ -138,9 +142,29 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "17:6203176078214075455",
+      "lastPropertyId": "3:7324982481728532681",
+      "name": "DetailSubMatterChild",
+      "properties": [
+        {
+          "id": "1:1052203703874728362",
+          "name": "idDetailSubMatterChild"
+        },
+        {
+          "id": "2:560240900899791998",
+          "name": "idVehicle"
+        },
+        {
+          "id": "3:7324982481728532681",
+          "name": "idSubMatterChild"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "16:4017619414161500516",
+  "lastEntityId": "17:6203176078214075455",
   "lastIndexId": "4:1432531296935922147",
   "lastRelationId": "12:3988277022806632609",
   "lastSequenceId": "0:0",
@@ -211,7 +235,10 @@
     4299212707277566993,
     8999495466418976014,
     2057833844642155314,
-    1245226592059802091
+    1245226592059802091,
+    8234153598724411304,
+    5857083296175365096,
+    7941781826703512834
   ],
   "retiredRelationUids": [
     7305842890382331854,

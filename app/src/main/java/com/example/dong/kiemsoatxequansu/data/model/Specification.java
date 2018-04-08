@@ -17,6 +17,9 @@ public class Specification {
     @SerializedName("Name")
     @Expose
     private String name;
+    @SerializedName("Style")
+    @Expose
+    private String style;
     @SerializedName("Unit")
     @Expose
     private String unit;
@@ -35,6 +38,25 @@ public class Specification {
     @SerializedName("Id_Child_Matter")
     @Expose
     private Integer idChildMatter;
+    @SerializedName("Id_SubMatterChild")
+    @Expose
+    private Integer idSubMatterChild;
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public Integer getIdSubMatterChild() {
+        return idSubMatterChild;
+    }
+
+    public void setIdSubMatterChild(Integer idSubMatterChild) {
+        this.idSubMatterChild = idSubMatterChild;
+    }
 
     public long getId() {
         return id;
