@@ -96,9 +96,7 @@ public class TraThongTinActivity extends AppCompatActivity implements ICallBack 
 
     /**
      * Setup control
-     * Created by ${USER} on ${DATE}
-     * #set( $USER = "hhdong" )
-     Created by ${USER} on ${DATE}
+     * Created by Dong on 10-Apr-18
      */
     private void addControl() {
         try {
@@ -172,9 +170,9 @@ public class TraThongTinActivity extends AppCompatActivity implements ICallBack 
             PackageManager pm = getPackageManager();
             int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, getPackageName());
             if (hasPerm == PackageManager.PERMISSION_GRANTED) {
-                final CharSequence[] options = {"Take Photo", "Choose From Gallery","Cancel"};
+                final CharSequence[] options = {getResources().getString(R.string.take_photo), getResources().getString(R.string.gallery),getResources().getString(R.string.cancel)};
                 android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-                builder.setTitle("Select Option");
+                builder.setTitle(getResources().getString(R.string.choose_image_from));
                 builder.setIcon(android.R.drawable.btn_star_big_on);
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override

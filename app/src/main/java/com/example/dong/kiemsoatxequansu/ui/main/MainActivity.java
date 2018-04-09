@@ -1,5 +1,6 @@
 package com.example.dong.kiemsoatxequansu.ui.main;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -11,10 +12,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.dong.kiemsoatxequansu.R;
+import com.example.dong.kiemsoatxequansu.ui.notebook.ICallBackData;
 import com.example.dong.kiemsoatxequansu.ui.notebook.SoTayActivity;
+import com.example.dong.kiemsoatxequansu.ui.notebook.SotayAsynstask;
 import com.example.dong.kiemsoatxequansu.ui.searchinfor.TraThongTinActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ICallBackData {
 
     CardView cvSoTayLaiXe, cvTraThongTin, cv_BienBanViPham;
     private static final int MY_PERMISSIONS_REQUEST = 1;
@@ -35,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    Intent intent = new Intent(MainActivity.this, SoTayActivity.class);
-                    startActivity(intent);
+
+                    SotayAsynstask soTayActivity=new SotayAsynstask(MainActivity.this);
+                    soTayActivity.execute();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -103,5 +108,11 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void callBackData() {
+        Intent intent = new Intent(MainActivity.this, SoTayActivity.class);
+        startActivity(intent);
     }
 }

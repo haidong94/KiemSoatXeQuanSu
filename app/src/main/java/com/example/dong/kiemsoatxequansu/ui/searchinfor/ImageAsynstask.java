@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.util.SparseArray;
 
+import com.example.dong.kiemsoatxequansu.R;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
@@ -23,7 +24,7 @@ public class ImageAsynstask extends AsyncTask<Bitmap,Void,StringBuilder> {
     StringBuilder stringBuilder = new StringBuilder();
     public ImageAsynstask(Context context){
         this.context=context;
-        progressDialog=new ProgressDialog(context);
+        progressDialog=new ProgressDialog(context,R.style.MyAlertDialogStyle);
         this.iCallBack= (ICallBack) context;
     }
 
@@ -55,7 +56,7 @@ public class ImageAsynstask extends AsyncTask<Bitmap,Void,StringBuilder> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog.setMessage("Waiting...");
+        progressDialog.setMessage(context.getResources().getString(R.string.progress));
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
     }

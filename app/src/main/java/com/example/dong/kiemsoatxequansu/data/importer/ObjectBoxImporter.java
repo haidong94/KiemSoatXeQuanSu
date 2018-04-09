@@ -1,6 +1,7 @@
 package com.example.dong.kiemsoatxequansu.data.importer;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.os.Environment;
 import android.util.Log;
@@ -44,10 +45,11 @@ public class ObjectBoxImporter {
     private Box<SubMatterChild> subMatterChildBox;
     private Activity activity;
 
-    public static BoxStore getInstance(){
+    public static BoxStore getInstance() {
         return boxStore;
 
     }
+
     public ObjectBoxImporter(Resources resources, Activity activity) {
         this.resources = resources;
         this.activity = activity;
@@ -62,7 +64,9 @@ public class ObjectBoxImporter {
     }
 
     public void importFromJson() {
+
         try {
+
             File sdcard = Environment.getExternalStorageDirectory();
             // transaction timer
             transactionTime = new TransactionTime(System.currentTimeMillis());
@@ -127,92 +131,141 @@ public class ObjectBoxImporter {
 
             transactionTime.setEnd(System.currentTimeMillis());
             Log.d("ObjectBox", "createAllFromJson Task completed in " + transactionTime.getDuration() + "ms");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
     /**
      * Lấy danh sách các chi tiết con từ file
      * Created_by hhdong 05/02/2018
+     *
      * @param getSubMatterChild tên file cần lấy
      * @return danh sách các chi tiết
      */
     private List<SubMatterChild> convertStringToObjectSubMatterChild(String getSubMatterChild) {
-        SubMatterChild[] gsonObj = new Gson().fromJson(getSubMatterChild, SubMatterChild[].class);
-        return Arrays.asList(gsonObj);
+        try {
+            SubMatterChild[] gsonObj = new Gson().fromJson(getSubMatterChild, SubMatterChild[].class);
+            return Arrays.asList(gsonObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     /**
      * Lấy danh sách các chi tiết con từ file
      * Created_by hhdong 05/02/2018
+     *
      * @param getDetailSubMatterChild tên file cần lấy
      * @return danh sách các chi tiết
      */
     private List<DetailSubMatterChild> convertStringToObjectDetailSubMatterChild(String getDetailSubMatterChild) {
-        DetailSubMatterChild[] gsonObj = new Gson().fromJson(getDetailSubMatterChild, DetailSubMatterChild[].class);
-        return Arrays.asList(gsonObj);
+        try {
+            DetailSubMatterChild[] gsonObj = new Gson().fromJson(getDetailSubMatterChild, DetailSubMatterChild[].class);
+            return Arrays.asList(gsonObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     private List<DetailMatterChild> convertStringToObjectDetailMatterChild(String getDetailMatterChild) {
-        DetailMatterChild[] gsonObj = new Gson().fromJson(getDetailMatterChild, DetailMatterChild[].class);
-        return Arrays.asList(gsonObj);
+        try {
+            DetailMatterChild[] gsonObj = new Gson().fromJson(getDetailMatterChild, DetailMatterChild[].class);
+            return Arrays.asList(gsonObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     /**
      * Lấy danh sách các chi tiết từ file
      * Created_by hhdong 05/02/2018
+     *
      * @param getTextFromFile tên file cần lấy
      * @return danh sách các chi tiết
      */
     private List<Specification> convertStringToObjectSpeccification(String getTextFromFile) {
-        Specification[] gsonObj = new Gson().fromJson(getTextFromFile, Specification[].class);
-        return Arrays.asList(gsonObj);
+        try {
+            Specification[] gsonObj = new Gson().fromJson(getTextFromFile, Specification[].class);
+            return Arrays.asList(gsonObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     /**
      * Lấy danh sách các vật liệu con từ file
      * Created_by hhdong 05/02/2018
+     *
      * @param getTextFromFile tên file cần lấy
      * @return danh sách các vật liệu con
      */
     private List<MatterChild> convertStringToObjectMatterChild(String getTextFromFile) {
-        MatterChild[] gsonObj = new Gson().fromJson(getTextFromFile, MatterChild[].class);
-        return Arrays.asList(gsonObj);
+        try {
+            MatterChild[] gsonObj = new Gson().fromJson(getTextFromFile, MatterChild[].class);
+            return Arrays.asList(gsonObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     /**
      * Lấy danh sách các Vật liệu từ file
      * Created_by hhdong 05/02/2018
+     *
      * @param getTextFromFile tên file cần lấy
      * @return danh sách các vật liệu
      */
     private List<Matter> convertStringToObjectMatter(String getTextFromFile) {
-        Matter[] gsonObj = new Gson().fromJson(getTextFromFile, Matter[].class);
-        return Arrays.asList(gsonObj);
+        try {
+            Matter[] gsonObj = new Gson().fromJson(getTextFromFile, Matter[].class);
+            return Arrays.asList(gsonObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
 
     /**
      * Lấy danh sách các xe từ file
      * Created_by hhdong 05/04/2018
+     *
      * @param getTextFromFile tên file cần lấy
      * @return danh sách các xe
      */
     private List<Vehicle> convertStringToObject(String getTextFromFile) {
-        Vehicle[] gsonObj = new Gson().fromJson(getTextFromFile, Vehicle[].class);
-        return Arrays.asList(gsonObj);
+        try {
+            Vehicle[] gsonObj = new Gson().fromJson(getTextFromFile, Vehicle[].class);
+            return Arrays.asList(gsonObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     /**
      * Đọc file từ điện thoại sang string
-     *
+     * Created by Dong on 09-Apr-18
      * @param file file cần đọc
-     * @return string
+     * @return string chuỗi trả về
      */
     private String readTextFromFile(File file) {
         StringBuilder text = new StringBuilder();
-
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line = br.readLine();
@@ -220,7 +273,6 @@ public class ObjectBoxImporter {
                 text.append(line);
                 line = br.readLine();
             }
-
             br.close();
         } catch (IOException e) {
             //You'll need to add proper error handling here

@@ -2,8 +2,8 @@ package com.example.dong.kiemsoatxequansu.ui.notebook;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -143,7 +143,8 @@ public class SoTayActivity extends AppCompatActivity {
             setUpSpinerMatterChild();
 
             //specification
-            listSpecification = specificationBox.query().build().find();
+           // listSpecification = specificationBox.query().build().find();
+            listSpecification=new ArrayList<>();
             recyclerView = findViewById(R.id.recyclerview);
             recyclerView.setHasFixedSize(true);
             layout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
