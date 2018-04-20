@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.os.Environment;
+import android.util.Base64;
 import android.util.Log;
 
 import com.example.dong.kiemsoatxequansu.app.App;
@@ -14,6 +15,7 @@ import com.example.dong.kiemsoatxequansu.data.model.MatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.Specification;
 import com.example.dong.kiemsoatxequansu.data.model.SubMatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.Vehicle;
+import com.example.dong.kiemsoatxequansu.utils.Commons;
 import com.example.dong.kiemsoatxequansu.utils.TransactionTime;
 import com.google.gson.Gson;
 
@@ -22,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,7 +39,7 @@ public class ObjectBoxImporter {
     private Resources resources;
     private TransactionTime transactionTime;
     private static BoxStore boxStore;
-    private Box<Vehicle> vihicleBox;
+    private Box<Vehicle> vehicleBox;
     private Box<Matter> matterBox;
     private Box<MatterChild> matterChildBox;
     private Box<Specification> specificationBox;
@@ -45,16 +48,12 @@ public class ObjectBoxImporter {
     private Box<SubMatterChild> subMatterChildBox;
     private Activity activity;
 
-    public static BoxStore getInstance() {
-        return boxStore;
-
-    }
 
     public ObjectBoxImporter(Resources resources, Activity activity) {
         this.resources = resources;
         this.activity = activity;
         boxStore = ((App) activity.getApplication()).getBoxStore();
-        vihicleBox = boxStore.boxFor(Vehicle.class);
+        vehicleBox = boxStore.boxFor(Vehicle.class);
         matterBox = boxStore.boxFor(Matter.class);
         matterChildBox = boxStore.boxFor(MatterChild.class);
         specificationBox = boxStore.boxFor(Specification.class);
@@ -75,8 +74,18 @@ public class ObjectBoxImporter {
             File fileVehicle = new File(sdcard, "vehicle.txt");
             if (fileVehicle.exists()) {
                 String getVehicleFromFile = readTextFromFile(fileVehicle);
-                List<Vehicle> vihicleList = convertStringToObject(getVehicleFromFile);
-                vihicleBox.put(vihicleList);
+                List<Vehicle> vehicleList = convertStringToObject(getVehicleFromFile);
+                List<Vehicle> vehicleListEncode = new ArrayList<>();//danh sách xe sau khi mã hóa
+                for (Vehicle vehicle : vehicleList) {
+                    //Tạo object chứa dữ liệu mã hóa
+                    Vehicle vehicleEncode = new Vehicle();
+                    vehicleEncode.setIdVehicle(vehicle.getIdVehicle());
+                    if (vehicle.getNameVehicle() != null && !vehicle.getNameVehicle().isEmpty()) {
+                        vehicleEncode.setNameVehicle(Commons.encodeString(vehicle.getNameVehicle())); //mã hóa name vehicle
+                    }
+                    vehicleListEncode.add(vehicleEncode);
+                }
+                vehicleBox.put(vehicleListEncode);
             }
 
 
@@ -85,7 +94,17 @@ public class ObjectBoxImporter {
             if (fileMatter.exists()) {
                 String getMatterFromFile = readTextFromFile(fileMatter);
                 List<Matter> matterList = convertStringToObjectMatter(getMatterFromFile);
-                matterBox.put(matterList);
+                List<Matter> matterListEncode = new ArrayList<>();//danh sách nguyên liệu sau khi mã hóa
+                for (Matter matter : matterList) {
+                    //Tạo object chứa dữ liệu mã hóa
+                    Matter matterEncode = new Matter();
+                    matterEncode.setIdMatter(matter.getIdMatter());
+                    if (matter.getNameMatter() != null && !matter.getNameMatter().isEmpty()) {
+                        matterEncode.setNameMatter(Commons.encodeString(matter.getNameMatter())); //mã hóa name matter
+                    }
+                    matterListEncode.add(matterEncode);
+                }
+                matterBox.put(matterListEncode);
             }
 
             //file matter_child
@@ -93,7 +112,17 @@ public class ObjectBoxImporter {
             if (fileMatterChild.exists()) {
                 String getMatterChildFromFile = readTextFromFile(fileMatterChild);
                 List<MatterChild> matterChildList = convertStringToObjectMatterChild(getMatterChildFromFile);
-                matterChildBox.put(matterChildList);
+                List<MatterChild> matterChildListEncode = new ArrayList<>();//danh sách nguyên liệu con sau khi mã hóa
+                for (MatterChild matterChild : matterChildList) {
+                    //Tạo object chứa dữ liệu mã hóa
+                    MatterChild matterChildEncode = new MatterChild();
+                    matterChildEncode.setIdChildMatter(matterChild.getIdChildMatter());
+                    if (matterChild.getNameChildMatter() != null && !matterChild.getNameChildMatter().isEmpty()) {
+                        matterChildEncode.setNameChildMatter(Commons.encodeString(matterChild.getNameChildMatter())); //mã hóa name matter child
+                    }
+                    matterChildListEncode.add(matterChildEncode);
+                }
+                matterChildBox.put(matterChildListEncode);
             }
 
             //file specification
@@ -101,7 +130,29 @@ public class ObjectBoxImporter {
             if (fileSpecification.exists()) {
                 String getSpecificationFromFile = readTextFromFile(fileSpecification);
                 List<Specification> specificationList = convertStringToObjectSpeccification(getSpecificationFromFile);
-                specificationBox.put(specificationList);
+                List<Specification> specificationListEncode = new ArrayList<>();//danh sách chi tiết phụ tùng sau khi mã hóa
+                for (Specification specification : specificationList) {
+                    //Tạo object chứa dữ liệu mã hóa
+                    Specification specificationEncode = new Specification();
+                    specificationEncode.setId(specification.getId());
+                    specificationEncode.setIdVehicle(specification.getIdVehicle());
+                    specificationEncode.setIdMatter(specification.getIdMatter());
+                    specificationEncode.setIdChildMatter(specification.getIdChildMatter());
+                    specificationEncode.setIdSubMatterChild(specification.getIdSubMatterChild());
+                    if (specification.getName() != null && !specification.getName().isEmpty()) {
+                        specificationEncode.setName(Commons.encodeString(specification.getName())); //mã hóa tên chi tiết phụ tùng
+                    }
+                    if (specification.getStyle() != null && !specification.getStyle().isEmpty()) {
+                        specificationEncode.setStyle(Commons.encodeString(specification.getStyle()));//mã hóa Quy cách
+                    }
+                    if (specification.getUnit() != null && !specification.getUnit().isEmpty()) {
+                        specificationEncode.setUnit(Commons.encodeString(specification.getUnit()));//mã hóa đơn vị tính
+                    }
+                    specificationEncode.setPrice(specification.getPrice());
+                    specificationEncode.setQuantity(specification.getQuantity());
+                    specificationListEncode.add(specificationEncode);
+                }
+                specificationBox.put(specificationListEncode);
             }
 
 
@@ -126,7 +177,16 @@ public class ObjectBoxImporter {
             if (fileMatterChild.exists()) {
                 String getSubMatterChild = readTextFromFile(fileSubMatterChild);
                 List<SubMatterChild> subMatterChildList = convertStringToObjectSubMatterChild(getSubMatterChild);
-                subMatterChildBox.put(subMatterChildList);
+                List<SubMatterChild> subMatterChildListEncode = new ArrayList<>();//danh sách nguyên liệu con sau khi mã hóa
+                for (SubMatterChild subMatterChild : subMatterChildList) {
+                    //Tạo object chứa dữ liệu mã hóa
+                    SubMatterChild subMatterChildEncode = new SubMatterChild();
+                    subMatterChildEncode.setIdMatterChild(subMatterChild.getIdMatterChild());
+                    subMatterChildEncode.setNameSubMatterChild(Commons.encodeString(subMatterChild.getNameSubMatterChild())); //mã hóa name subMatterChild
+                    subMatterChildEncode.setIdSubMatterChild(subMatterChild.getIdSubMatterChild());
+                    subMatterChildListEncode.add(subMatterChildEncode);
+                }
+                subMatterChildBox.put(subMatterChildListEncode);
             }
 
             transactionTime.setEnd(System.currentTimeMillis());
@@ -261,6 +321,7 @@ public class ObjectBoxImporter {
     /**
      * Đọc file từ điện thoại sang string
      * Created by Dong on 09-Apr-18
+     *
      * @param file file cần đọc
      * @return string chuỗi trả về
      */

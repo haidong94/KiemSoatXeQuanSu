@@ -2,21 +2,18 @@ package com.example.dong.kiemsoatxequansu.data.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 
 @Entity
 public class DetailSubMatterChild {
-    @Id( assignable = true )
+    @Id(assignable = true)
     @SerializedName("Id_DetailSubMatterChild")
     @Expose
     private long idDetailSubMatterChild;
-
-
-
     @SerializedName("Id_Vehicle")
     @Expose
-
     private Integer idVehicle;
     @SerializedName("Id_SubMatterChild")
     @Expose

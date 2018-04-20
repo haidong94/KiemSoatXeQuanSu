@@ -25,7 +25,7 @@ import java.util.List;
  */
 
 public class SpecificationAdapter extends RecyclerView.Adapter<SpecificationAdapter.RecyclerViewHoder> {
-    private List<Specification> list;
+    private List<Specification> list; //danh sách chi tiết phụ tùng
     private Context context;
 
     SpecificationAdapter(List<Specification> list, Context context) {
@@ -46,7 +46,7 @@ public class SpecificationAdapter extends RecyclerView.Adapter<SpecificationAdap
     @Override
     public void onBindViewHolder(RecyclerViewHoder holder, @SuppressLint("RecyclerView") final int position) {
         holder.tvId.setText(String.valueOf(list.get(position).getId()));
-        holder.tvName.setText(list.get(position).getName());
+        holder.tvName.setText(Commons.decodeString(list.get(position).getName()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -75,15 +75,15 @@ public class SpecificationAdapter extends RecyclerView.Adapter<SpecificationAdap
                             dialogBuilder.setCancelable(false);
                             //set value
                             tvId.setText(String.valueOf(list.get(position).getId()));
-                            tvName.setText(list.get(position).getName());
-                            tvUnit.setText(list.get(position).getUnit());
+                            tvName.setText(Commons.decodeString(list.get(position).getName()));//giải mã tên
+                            tvUnit.setText(Commons.decodeString(list.get(position).getUnit())); //giải mã đơn vị tính
                             tvQuantity.setText(String.valueOf(list.get(position).getQuantity()));
                             tvPrice.setText(Commons.convertMoneytoVND(list.get(position).getPrice()) + " " + context.getString(R.string.vnd));
 
                             //Kiểm tra quy cách có null hay rỗng không? nếu có thì không hiển thị thông tin quy cách
-                            if(list.get(position).getStyle()!=null&&!list.get(position).getStyle().isEmpty()){
+                            if (list.get(position).getStyle() != null && !list.get(position).getStyle().isEmpty()) {
                                 llStyle.setVisibility(View.VISIBLE);
-                                tvStyle.setText(list.get(position).getStyle());
+                                tvStyle.setText(Commons.decodeString(list.get(position).getStyle()));//giải mã quy cách
                             }
 
                             final AlertDialog dialog = dialogBuilder.create();
@@ -108,6 +108,12 @@ public class SpecificationAdapter extends RecyclerView.Adapter<SpecificationAdap
 
     }
 
+    /**
+     * Change list
+     * Created by Dong on 10-Apr-18
+     *
+     * @param datas list want change
+     */
     public void swap(List<Specification> datas) {
         if (datas == null || datas.size() == 0) {
             Toast.makeText(context, "Không có phụ tùng", Toast.LENGTH_LONG).show();

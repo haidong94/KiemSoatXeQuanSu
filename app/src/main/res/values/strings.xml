@@ -24,5 +24,15 @@
     <string name="close">Đóng</string>
     <string name="detail_specification">Chi Tiết Phụ Tùng</string>
     <string name="vnd">VND</string>
+    <string name="download">Tải dữ liệu...</string>
+    <string name="waiting">Vui lòng đợi...</string>
+    <string name="progress">Đang xử lý...</string>
+    <string name="take_photo">Chụp ảnh</string>
+    <string name="gallery">Bộ sưu tập</string>
+    <string name="cancel">Hủy bỏ</string>
+    <string name="choose_image_from">Chọn ảnh từ</string>
+    <string name="quality_image_bad">Chất lượng ảnh chưa tốt. Bạn có thể nhập tay</string>
+    <string name="not_a_license_plate">Không phải định dạng biển số xe</string>
+    <string name="not_a_photo">Bạn chưa chọn ảnh</string>
 
 </resources>

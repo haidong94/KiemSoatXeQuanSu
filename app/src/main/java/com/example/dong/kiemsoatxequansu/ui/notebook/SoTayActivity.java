@@ -4,7 +4,9 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityCompat;
@@ -12,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,6 +42,7 @@ import com.example.dong.kiemsoatxequansu.data.model.SubMatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.SubMatterChild_;
 import com.example.dong.kiemsoatxequansu.data.model.Vehicle;
 import com.example.dong.kiemsoatxequansu.data.model.Vehicle_;
+import com.example.dong.kiemsoatxequansu.utils.Commons;
 import com.example.dong.kiemsoatxequansu.utils.TransactionTime;
 
 import java.util.ArrayList;
@@ -129,17 +133,26 @@ public class SoTayActivity extends AppCompatActivity {
     private void setUpSpiner() {
         try {
             //vehicle
-            String[] listNameVehicle = vehicleBox.query().build().property(Vehicle_.nameVehicle).findStrings();
-            ArrayAdapter<String> adapterVehicle = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listNameVehicle);
+            String[] listNameVehicle = vehicleBox.query().build().property(Vehicle_.nameVehicle).findStrings();//danh sách tên xe mã hóa từ database
+            //Giải mã
+            List<String> listNameVehicleDecode=new ArrayList<>();//danh sách tên sau khi giải mã
+            for(String valueEncode:listNameVehicle){
+                listNameVehicleDecode.add(Commons.decodeString(valueEncode));//giải mã tên
+            }
+            ArrayAdapter<String> adapterVehicle = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listNameVehicleDecode);
             spinVehicle.setAdapter(adapterVehicle);
-         //   spinVehicle.setPopupBackgroundResource(getResources().getColor(R.color.colorWhile));
 
             //matter
             String[] listNameMatter = matterBox.query().build().property(Matter_.nameMatter).findStrings();
-            ArrayAdapter<String> adapterMatter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listNameMatter);
+            //Giải mã
+            List<String> listNameMatterDecode=new ArrayList<>();//danh sách tên sau khi giải mã
+            for(String valueEncode:listNameMatter){
+                listNameMatterDecode.add(Commons.decodeString(valueEncode));//giải mã tên
+            }
+            ArrayAdapter<String> adapterMatter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listNameMatterDecode);
             spinMatter.setAdapter(adapterMatter);
 
-            //matter child
+            //setup spinner matter child
             setUpSpinerMatterChild();
 
             //specification
@@ -161,6 +174,14 @@ public class SoTayActivity extends AppCompatActivity {
      * Created by Dong on 06-Apr-18
      */
     private void addEvent() {
+//        final Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                // Do something after 5s = 5000ms
+//
+//            }
+//        }, 5000);
         spinVehicle.setOnItemSelectedListener(onItemListener);
         spinMatter.setOnItemSelectedListener(onItemMatterListener);
         spinMatterChild.setOnItemSelectedListener(onItemMatterChildListener);
@@ -211,7 +232,7 @@ public class SoTayActivity extends AppCompatActivity {
 
     /**
      * Lắng nghe thay đổi  spinner nguyên liệu con để thay đổi spin cháu
-     * Created_by hhdong 05/04/2018
+     * Created by Dong on 5-Apr-18
      */
     private AdapterView.OnItemSelectedListener onItemMatterChildListener = new AdapterView.OnItemSelectedListener() {
         @Override
@@ -219,11 +240,11 @@ public class SoTayActivity extends AppCompatActivity {
             //Lấy xe được chọn
             transactionTime = new TransactionTime(System.currentTimeMillis());
             String nameVehicle = spinVehicle.getSelectedItem().toString();
-            Vehicle vehicle = vehicleBox.query().equal(Vehicle_.nameVehicle, nameVehicle).build().findFirst();
+            Vehicle vehicle = vehicleBox.query().equal(Vehicle_.nameVehicle, Commons.encodeString(nameVehicle)).build().findFirst();
 
             //Lấy vật liệu con được chọn
             String nameMaterChild = spinMatterChild.getSelectedItem().toString();
-            final MatterChild matterChild = matterChildBox.query().equal(MatterChild_.nameChildMatter, nameMaterChild).build().findFirst();
+            final MatterChild matterChild = matterChildBox.query().equal(MatterChild_.nameChildMatter, Commons.encodeString(nameMaterChild)).build().findFirst();
 
             //xóa danh sách cũ
             listNameSubMatterChild.clear();
@@ -243,7 +264,13 @@ public class SoTayActivity extends AppCompatActivity {
                 }
 
             }
-            adapterSubMatterChild = new ArrayAdapter<>(SoTayActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameSubMatterChild);
+
+
+            List<String> listNameSubMatterChildDecode=new ArrayList<>();//danh sách tên sau khi giải mã
+            for(String valueEncode:listNameSubMatterChild){
+                listNameSubMatterChildDecode.add(Commons.decodeString(valueEncode));//giải mã tên
+            }
+            adapterSubMatterChild = new ArrayAdapter<>(SoTayActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameSubMatterChildDecode);
             spinSubMatterChild.setAdapter(adapterSubMatterChild);
             transactionTime.setEnd(System.currentTimeMillis());
             Log.d("ObjectBox", "createAllFromJson Task completed in " + transactionTime.getDuration() + "ms");
@@ -268,22 +295,22 @@ public class SoTayActivity extends AppCompatActivity {
             try {
                 //Lấy tên xe để tìm id của xe đó
                 String nameVehicle = spinVehicle.getSelectedItem().toString();
-                Vehicle vehicle = vehicleBox.query().equal(Vehicle_.nameVehicle, nameVehicle).build().findFirst();
+                Vehicle vehicle = vehicleBox.query().equal(Vehicle_.nameVehicle, Commons.encodeString(nameVehicle)).build().findFirst();
 
                 //Lấy tên nguyên vật liệu để tìm id của nguyên vật liệu đó
                 String nameMatter = spinMatter.getSelectedItem().toString();
-                Matter matter = matterBox.query().equal(Matter_.nameMatter, nameMatter).build().findFirst();
+                Matter matter = matterBox.query().equal(Matter_.nameMatter, Commons.encodeString(nameMatter)).build().findFirst();
 
 
                 List<Specification> data;
                 if (spinMatterChild.isEnabled()) {
                     //Lấy tên nguyên vật liệu con để tìm id của nguyên vật liệu con đó
                     String nameMatterChild = spinMatterChild.getSelectedItem().toString();
-                    MatterChild matterChild = matterChildBox.query().equal(MatterChild_.nameChildMatter, nameMatterChild).build().findFirst();
+                    MatterChild matterChild = matterChildBox.query().equal(MatterChild_.nameChildMatter, Commons.encodeString(nameMatterChild)).build().findFirst();
 
                     //Lấy tên nguyên vật liệu con để tìm id của nguyên vật liệu con đó
                     String nameSubMatterChild = spinSubMatterChild.getSelectedItem().toString();
-                    SubMatterChild subMatterChild = subMatterChildBox.query().equal(SubMatterChild_.nameSubMatterChild, nameSubMatterChild).build().findFirst();
+                    SubMatterChild subMatterChild = subMatterChildBox.query().equal(SubMatterChild_.nameSubMatterChild, Commons.encodeString(nameSubMatterChild)).build().findFirst();
                     data = specificationBox.query()
                             .equal(Specification_.idVehicle, vehicle != null ? vehicle.getIdVehicle() : 0)
                             .equal(Specification_.idMatter, matter != null ? matter.getIdMatter() : 0)
@@ -356,36 +383,39 @@ public class SoTayActivity extends AppCompatActivity {
             //Lấy xe được chọn
             transactionTime = new TransactionTime(System.currentTimeMillis());
             String nameVehicle = spinVehicle.getSelectedItem().toString();
-            Vehicle vehicle = vehicleBox.query().equal(Vehicle_.nameVehicle, nameVehicle).build().findFirst();
+            Vehicle vehicle = vehicleBox.query().equal(Vehicle_.nameVehicle, Commons.encodeString(nameVehicle)).build().findFirst();
 
             //Nếu vật liệu con là hiển thị thì cập nhật spin con và spin cháu
-            if (spinMatterChild.isEnabled()) {
+
+            if (spinMatterChild!=null&&spinMatterChild.isEnabled()) {
                 //Cập nhật spin cháu
-                String nameMaterChild = spinMatterChild.getSelectedItem().toString();
-                final MatterChild matterChild = matterChildBox.query().equal(MatterChild_.nameChildMatter, nameMaterChild).build().findFirst();
-                //xóa danh sách cũ
-                listNameSubMatterChild.clear();
-                int[] listIdSubMatterChild = detailSubMatterChildBox.query()
-                        .equal(DetailSubMatterChild_.idVehicle, vehicle != null ? vehicle.getIdVehicle() : 0)
-                        .build()
-                        .property(DetailSubMatterChild_.idSubMatterChild).findInts();
-                for (int aListIdSubMatterChild : listIdSubMatterChild) {
-                    //Tìm subMatterchild theo id và theo idMatterChild
-                    SubMatterChild subMatterChild = subMatterChildBox.query().equal(SubMatterChild_.idSubMatterChild, aListIdSubMatterChild)
-                            .equal(SubMatterChild_.idMatterChild, matterChild != null ? matterChild.getIdChildMatter() : 0)
-                            .build().findFirst();
-                    if (subMatterChild != null) {
-                        listNameSubMatterChild.add(subMatterChild.getNameSubMatterChild());
+                if(spinMatterChild.getSelectedItem()!=null) {
+                    String nameMaterChild = spinMatterChild.getSelectedItem().toString();
+                    final MatterChild matterChild = matterChildBox.query().equal(MatterChild_.nameChildMatter, nameMaterChild).build().findFirst();
+                    //xóa danh sách cũ
+                    listNameSubMatterChild.clear();
+                    int[] listIdSubMatterChild = detailSubMatterChildBox.query()
+                            .equal(DetailSubMatterChild_.idVehicle, vehicle != null ? vehicle.getIdVehicle() : 0)
+                            .build()
+                            .property(DetailSubMatterChild_.idSubMatterChild).findInts();
+                    for (int aListIdSubMatterChild : listIdSubMatterChild) {
+                        //Tìm subMatterchild theo id và theo idMatterChild
+                        SubMatterChild subMatterChild = subMatterChildBox.query().equal(SubMatterChild_.idSubMatterChild, aListIdSubMatterChild)
+                                .equal(SubMatterChild_.idMatterChild, matterChild != null ? matterChild.getIdChildMatter() : 0)
+                                .build().findFirst();
+                        if (subMatterChild != null) {
+                            listNameSubMatterChild.add(subMatterChild.getNameSubMatterChild());
+                        }
                     }
+                    adapterSubMatterChild = new ArrayAdapter<>(SoTayActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameSubMatterChild);
+                    spinSubMatterChild.setAdapter(adapterSubMatterChild);
+
+
+                    setUpSpinerMatterChild();
+
+                    transactionTime.setEnd(System.currentTimeMillis());
+                    Log.d("ObjectBox", "createAllFromJson Task completed in " + transactionTime.getDuration() + "ms");
                 }
-                adapterSubMatterChild = new ArrayAdapter<>(SoTayActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameSubMatterChild);
-                spinSubMatterChild.setAdapter(adapterSubMatterChild);
-
-
-                setUpSpinerMatterChild();
-
-                transactionTime.setEnd(System.currentTimeMillis());
-                Log.d("ObjectBox", "createAllFromJson Task completed in " + transactionTime.getDuration() + "ms");
             }
 
 
@@ -399,10 +429,10 @@ public class SoTayActivity extends AppCompatActivity {
 
     private void setUpSpinerMatterChild() {
         try {
-            String nameVehicle = spinVehicle.getSelectedItem().toString();
-            Vehicle vehicle = vehicleBox.query().equal(Vehicle_.nameVehicle, nameVehicle).build().findFirst();
-            String nameMater = spinMatter.getSelectedItem().toString();
-            final Matter matter = matterBox.query().equal(Matter_.nameMatter, nameMater).build().findFirst();
+            String nameVehicle = spinVehicle.getSelectedItem().toString();//Lấy tên xe dk chọn ở spinner dưới dạng giải mã
+            Vehicle vehicle = vehicleBox.query().equal(Vehicle_.nameVehicle, Commons.encodeString(nameVehicle)).build().findFirst();//mã hóa lại tên để tìm xe trong csdl
+            String nameMater = spinMatter.getSelectedItem().toString();//Lấy tên nguyên liệu dk chọn ở spinner dưới dạng giải mã
+            final Matter matter = matterBox.query().equal(Matter_.nameMatter,  Commons.encodeString(nameMater)).build().findFirst();//mã hóa lại tên để tìm nguyên liệu trong csdl
 
             //xóa danh sách cũ
             listNameMatterChild.clear();
@@ -422,7 +452,13 @@ public class SoTayActivity extends AppCompatActivity {
                     listNameMatterChild.add(matterChild.getNameChildMatter());
                 }
             }
-            adapterMatterChild = new ArrayAdapter<>(SoTayActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameMatterChild);
+
+            //Giải mã
+            List<String> listNameMatterChildDecode=new ArrayList<>();//danh sách tên sau khi giải mã
+            for(String valueEncode:listNameMatterChild){
+                listNameMatterChildDecode.add(Commons.decodeString(valueEncode));//giải mã tên
+            }
+            adapterMatterChild = new ArrayAdapter<>(SoTayActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameMatterChildDecode);
             spinMatterChild.setAdapter(adapterMatterChild);
         } catch (Exception e) {
            e.printStackTrace();

@@ -27,6 +27,10 @@ public class ProfileFragment extends DialogFragment {
 
     ImageProfile imageProfile;
 
+    /**
+     * Bắn ảnh
+     * Created by Dong on 10-Apr-18
+     */
     public interface ImageProfile{
         void SendImage(Bitmap uri);
     }
@@ -37,28 +41,38 @@ public class ProfileFragment extends DialogFragment {
         View view=inflater.inflate(R.layout.dialogframent_profile,container,false);
         final CropImageView cropImageView=  view.findViewById(R.id.cropImageView);
 
-        btnReturn=  view.findViewById(R.id.btnReturn);
-        btnCheck=  view.findViewById(R.id.btnCheck);
+        try {
+            btnReturn=  view.findViewById(R.id.btnReturn);
+            btnCheck=  view.findViewById(R.id.btnCheck);
+            if (getArguments() != null){
+                String uri = getArguments().getString("Image",null);
+                if (uri != null){
+                    uril= Uri.parse(uri);
+                    cropImageView.setImageUriAsync(uril); //Gán ảnh truyền vào
 
-
-        if (getArguments() != null){
-            String uri = getArguments().getString("Image",null);
-            if (uri != null){
-                uril= Uri.parse(uri);
-                cropImageView.setImageUriAsync(uril);
-
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+
 
         btnCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageProfile.SendImage(cropImageView.getCroppedImage(100,100));
-                getDialog().dismiss();
+                try {
+                    imageProfile.SendImage(cropImageView.getCroppedImage(100,100)); //Bắn ảnh
+                    getDialog().dismiss();
+                } catch (Exception e) {
+                   e.printStackTrace();
+                }
+
             }
         });
         return view;
     }
+
 
     @Override
     public void onAttach(Context context) {

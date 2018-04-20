@@ -5,5 +5,6 @@ package com.example.dong.kiemsoatxequansu.ui.searchinfor;
  */
 
 public interface ICallBack {
+    //Callback ảnh
     void callBackStringFromImage();
 }

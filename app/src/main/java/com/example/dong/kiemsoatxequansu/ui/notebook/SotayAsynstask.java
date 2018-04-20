@@ -8,40 +8,50 @@ import android.os.AsyncTask;
 import com.example.dong.kiemsoatxequansu.R;
 import com.example.dong.kiemsoatxequansu.data.importer.ObjectBoxImporter;
 
-public class SotayAsynstask extends AsyncTask<Void,Void,Void> {
+public class SotayAsynstask extends AsyncTask<Void, Void, Void> {
 
-    Context context;
-    ICallBackData iCallBackData;
-    ProgressDialog progressDialog;
-    public SotayAsynstask( Context context){
-        this.context=context;
-        progressDialog=new ProgressDialog(context,R.style.MyAlertDialogStyle);
-        this.iCallBackData= (ICallBackData) context;
+    private Context context;
+    private ICallBackData iCallBackData;
+    private ProgressDialog progressDialog;
+
+    public SotayAsynstask(Context context) {
+        this.context = context;
+        progressDialog = new ProgressDialog(context, R.style.MyAlertDialogStyle);
+        this.iCallBackData = (ICallBackData) context;
     }
 
     @Override
     protected Void doInBackground(Void... params) {
         ObjectBoxImporter objectBoxImporter = new ObjectBoxImporter(context.getResources(), (Activity) context);
         objectBoxImporter.importFromJson();
-
         return null;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog.setMessage(context.getResources().getString(R.string.download));
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
+        try {
+            progressDialog.setMessage(context.getResources().getString(R.string.download));
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        } catch (Exception e) {
+           e.printStackTrace();
+        }
+
     }
 
     @Override
     protected void onPostExecute(Void result) {
         super.onPostExecute(result);
-        iCallBackData.callBackData();
-        if (progressDialog.isShowing()) {
-            progressDialog.dismiss();
+        try {
+            iCallBackData.callBackData();
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        } catch (Exception e) {
+           e.printStackTrace();
         }
+
     }
 
     @Override

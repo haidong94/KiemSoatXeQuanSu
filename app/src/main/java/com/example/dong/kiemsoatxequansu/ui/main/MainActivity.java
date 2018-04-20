@@ -8,6 +8,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -27,12 +29,27 @@ public class MainActivity extends AppCompatActivity implements ICallBackData {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String testValue = "Hello, world!";
+
+        byte[] encodeValue = Base64.encode(testValue.getBytes(), Base64.DEFAULT);
+        byte[] decodeValue = Base64.decode(encodeValue, Base64.DEFAULT);
+
+        String a=new String(encodeValue);
+        String b=new String(decodeValue);
+
+        Log.d("TEST", "defaultValue = " + testValue);
+        Log.d("TEST", "encodeValue = " + a);
+        Log.d("TEST", "decodeValue = " +b);
         addControl();
         addEvent();
 
         checkPermission();
     }
 
+    /**
+     * Sự kiện control
+     * Created by Dong on 10-Apr-18
+     */
     private void addEvent() {
         cvSoTayLaiXe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,12 +81,20 @@ public class MainActivity extends AppCompatActivity implements ICallBackData {
         cv_BienBanViPham.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"Tính năng đang phát triển",Toast.LENGTH_SHORT).show();
+                try {
+                    Toast.makeText(MainActivity.this,"Tính năng đang phát triển",Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                   e.printStackTrace();
+                }
             }
         });
 
     }
 
+    /**
+     * Khởi tạo control
+     * Created by Dong on 10-Apr-18
+     */
     private void addControl() {
         try {
             cvSoTayLaiXe = findViewById(R.id.cvSoTayLaiXe);
@@ -82,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements ICallBackData {
 
     /**
      * Kiểm tra quyền
+     * Created by Dong on 10-Apr-18
      */
     private void checkPermission() {
         try {
@@ -110,6 +136,10 @@ public class MainActivity extends AppCompatActivity implements ICallBackData {
 
     }
 
+    /**
+     * Callback dữ liệu
+     * Created by Dong on 19-Apr-18
+     */
     @Override
     public void callBackData() {
         Intent intent = new Intent(MainActivity.this, SoTayActivity.class);
