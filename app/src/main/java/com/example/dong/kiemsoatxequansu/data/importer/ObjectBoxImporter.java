@@ -1,15 +1,15 @@
 package com.example.dong.kiemsoatxequansu.data.importer;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.os.Environment;
-import android.util.Base64;
 import android.util.Log;
 
 import com.example.dong.kiemsoatxequansu.app.App;
 import com.example.dong.kiemsoatxequansu.data.model.DetailMatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.DetailSubMatterChild;
+import com.example.dong.kiemsoatxequansu.data.model.DrivingLicense;
+import com.example.dong.kiemsoatxequansu.data.model.DrivingLicenseCatalog;
 import com.example.dong.kiemsoatxequansu.data.model.Matter;
 import com.example.dong.kiemsoatxequansu.data.model.MatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.Specification;
@@ -39,6 +39,8 @@ public class ObjectBoxImporter {
     private Resources resources;
     private TransactionTime transactionTime;
     private static BoxStore boxStore;
+
+    //Tra cứu phụ tùng xe
     private Box<Vehicle> vehicleBox;
     private Box<Matter> matterBox;
     private Box<MatterChild> matterChildBox;
@@ -46,6 +48,10 @@ public class ObjectBoxImporter {
     private Box<DetailSubMatterChild> detailSubMatterChildBox;
     private Box<DetailMatterChild> detailMatterChildBox;
     private Box<SubMatterChild> subMatterChildBox;
+
+    //Tra giấy phép lái xe
+    private Box<DrivingLicenseCatalog> drivingLicenseCatalogBox;
+    private Box<DrivingLicense> drivingLicenseBox;
     private Activity activity;
 
 
@@ -60,8 +66,87 @@ public class ObjectBoxImporter {
         detailSubMatterChildBox = boxStore.boxFor(DetailSubMatterChild.class);
         detailMatterChildBox = boxStore.boxFor(DetailMatterChild.class);
         subMatterChildBox = boxStore.boxFor(SubMatterChild.class);
+
+        drivingLicenseCatalogBox=boxStore.boxFor(DrivingLicenseCatalog.class);
+        drivingLicenseBox=boxStore.boxFor(DrivingLicense.class);
     }
 
+    /**
+     * Import dữ liệu giấy phép lái xe
+     * Created by Dong on 24-Apr-18
+     */
+    public void importDrivingLicenseFromJson(){
+
+        try {
+            File sdcard = Environment.getExternalStorageDirectory();
+            // transaction timer
+            transactionTime = new TransactionTime(System.currentTimeMillis());
+
+            //file driving_license_catalog
+            File fileCatalog = new File(sdcard, "driving_license_catalog.txt");
+            if (fileCatalog.exists()) {
+                String getCatalogDrivingFromFile = readTextFromFile(fileCatalog);
+                List<DrivingLicenseCatalog> catalogList = convertStringToObjectCatalog(getCatalogDrivingFromFile);
+                List<DrivingLicenseCatalog> catalogListEncode = new ArrayList<>();
+                for (DrivingLicenseCatalog catalog : catalogList) {
+                    //Tạo object chứa dữ liệu mã hóa
+                    DrivingLicenseCatalog drivingLicenseCatalog = new DrivingLicenseCatalog();
+                    drivingLicenseCatalog.setIdCatalog(catalog.getIdCatalog());
+                    drivingLicenseCatalog.setClassCatalog(Commons.encodeString(catalog.getClassCatalog()));
+                    drivingLicenseCatalog.setNotesCatalog(Commons.encodeString(catalog.getNotesCatalog()));
+                    if(catalog.getExpiryDate()!=null) {
+                        drivingLicenseCatalog.setExpiryDate(Commons.encodeString(catalog.getExpiryDate()));
+                    }
+                    catalogListEncode.add(drivingLicenseCatalog);
+                }
+                drivingLicenseCatalogBox.put(catalogListEncode);
+            }
+
+
+            //file driving_license
+            File fileDrivingLicense = new File(sdcard, "driving_license.txt");
+            if (fileDrivingLicense.exists()) {
+                String getDrivingLicenseFromFile = readTextFromFile(fileDrivingLicense);
+                List<DrivingLicense> drivingLicenseList = convertStringToObjectDrivingLicense(getDrivingLicenseFromFile);
+                List<DrivingLicense> drivingLicenseListEncode = new ArrayList<>();
+                for (DrivingLicense drivingLicense : drivingLicenseList) {
+                    //Tạo object chứa dữ liệu mã hóa
+                    DrivingLicense drivingLicenseEncode = new DrivingLicense();
+                    drivingLicenseEncode.setIdDrivingLicense(drivingLicense.getIdDrivingLicense());
+
+                    drivingLicenseEncode.setNumberDrivingLicense(Commons.encodeString(drivingLicense.getNumberDrivingLicense()));
+                    drivingLicenseEncode.setNameDriver(Commons.encodeString(drivingLicense.getNameDriver()));
+                    drivingLicenseEncode.setDateRegister(Commons.encodeString(drivingLicense.getDateRegister()));
+                    drivingLicenseEncode.setBirthDay(Commons.encodeString(drivingLicense.getBirthDay()));
+                    drivingLicenseEncode.setCodePerson(Commons.encodeString(drivingLicense.getCodePerson()));
+                    drivingLicenseEncode.setCodeDateRanger(Commons.encodeString(drivingLicense.getCodeDateRanger()));
+                    drivingLicenseEncode.setCodeIssuedBy(Commons.encodeString(drivingLicense.getCodeIssuedBy()));
+                    drivingLicenseEncode.setDateOfEnlistment(Commons.encodeString(drivingLicense.getDateOfEnlistment()));
+                    drivingLicenseEncode.setDateOfRecruitment(Commons.encodeString(drivingLicense.getDateOfRecruitment()));
+                    drivingLicenseEncode.setKilometersDriven(Commons.encodeString(drivingLicense.getKilometersDriven()));
+                    drivingLicenseEncode.setTimeHasDrove(Commons.encodeString(drivingLicense.getTimeHasDrove()));
+                    drivingLicenseEncode.setVillage(Commons.encodeString(drivingLicense.getVillage()));
+                    drivingLicenseEncode.setTown(Commons.encodeString(drivingLicense.getTown()));
+                    drivingLicenseEncode.setDistrict(Commons.encodeString(drivingLicense.getDistrict()));
+                    drivingLicenseEncode.setProvinces(Commons.encodeString(drivingLicense.getProvinces()));
+                    drivingLicenseEncode.setNumberOfficers(Commons.encodeString(drivingLicense.getNumberOfficers()));
+                    drivingLicenseEncode.setNameUnit(Commons.encodeString(drivingLicense.getNameUnit()));
+                    drivingLicenseEncode.setIdCatalog(drivingLicense.getIdCatalog());
+
+                    drivingLicenseListEncode.add(drivingLicenseEncode);
+                }
+                drivingLicenseBox.put(drivingLicenseListEncode);
+            }
+        } catch (Exception e) {
+           e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Import dữ liệu tra cứu phụ tùng xe
+     * Created by Dong on 24-Apr-18
+     */
     public void importFromJson() {
 
         try {
@@ -195,6 +280,42 @@ public class ObjectBoxImporter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    /**
+     * Lấy danh sách các Vật liệu từ file
+     * Created_by hhdong 05/02/2018
+     *
+     * @param getTextFromFile tên file cần lấy
+     * @return danh sách các vật liệu
+     */
+    private List<DrivingLicenseCatalog> convertStringToObjectCatalog(String getTextFromFile) {
+        try {
+            DrivingLicenseCatalog[] gsonObj = new Gson().fromJson(getTextFromFile, DrivingLicenseCatalog[].class);
+            return Arrays.asList(gsonObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+    /**
+     * Lấy danh sách các Vật liệu từ file
+     * Created_by hhdong 05/02/2018
+     *
+     * @param getTextFromFile tên file cần lấy
+     * @return danh sách các vật liệu
+     */
+    private List<DrivingLicense> convertStringToObjectDrivingLicense(String getTextFromFile) {
+        try {
+            DrivingLicense[] gsonObj = new Gson().fromJson(getTextFromFile, DrivingLicense[].class);
+            return Arrays.asList(gsonObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
 
     }
 

@@ -2,11 +2,8 @@ package com.example.dong.kiemsoatxequansu.ui.notebook;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityCompat;
@@ -14,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,8 +25,8 @@ import com.example.dong.kiemsoatxequansu.R;
 import com.example.dong.kiemsoatxequansu.app.App;
 import com.example.dong.kiemsoatxequansu.data.importer.ObjectBoxImporter;
 import com.example.dong.kiemsoatxequansu.data.model.DetailMatterChild;
-import com.example.dong.kiemsoatxequansu.data.model.DetailSubMatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.DetailMatterChild_;
+import com.example.dong.kiemsoatxequansu.data.model.DetailSubMatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.DetailSubMatterChild_;
 import com.example.dong.kiemsoatxequansu.data.model.Matter;
 import com.example.dong.kiemsoatxequansu.data.model.MatterChild;
@@ -115,8 +111,8 @@ public class SoTayActivity extends AppCompatActivity {
             detailMatterChildBox = boxStore.boxFor(DetailMatterChild.class);
             subMatterChildBox = boxStore.boxFor(SubMatterChild.class);
 
-            ObjectBoxImporter objectBoxImporter = new ObjectBoxImporter(getResources(), SoTayActivity.this);
-            objectBoxImporter.importFromJson();
+//            ObjectBoxImporter objectBoxImporter = new ObjectBoxImporter(getResources(), SoTayActivity.this);
+//            objectBoxImporter.importFromJson();
 
         } catch (Exception e) {
             e.printStackTrace();

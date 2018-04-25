@@ -34,5 +34,25 @@
     <string name="quality_image_bad">Chất lượng ảnh chưa tốt. Bạn có thể nhập tay</string>
     <string name="not_a_license_plate">Không phải định dạng biển số xe</string>
     <string name="not_a_photo">Bạn chưa chọn ảnh</string>
+    <string name="enter_driving_license">Nhập số giấy phép lái xe</string>
+    <string name="search_driving_license">TRA CỨU GIẤY PHÉP LÁI XE</string>
+    <string name="search_infor">Tra cứu thông tin</string>
+    <string name="empty_driving_license">Bạn chưa nhập số giấy phép lái xe</string>
+    <string name="number_driving_license">Số giấy phép:</string>
+    <string name="name_driver">Tên lái xe:</string>
+    <string name="birthday">Ngày sinh:</string>
+    <string name="address">Địa chỉ:</string>
+    <string name="code_person">Số chứng minh thư:</string>
+    <string name="code_date_ranger">Ngày cấp:</string>
+    <string name="code_issued_by">Nơi cấp:</string>
+    <string name="date_of_elistment">Ngày nhập ngũ:</string>
+    <string name="date_of_recuitment">Ngày tuyển dụng:</string>
+    <string name="kilometers_driven">Số km đã lái:</string>
+    <string name="time_has_drove">Thời gian lái:</string>
+    <string name="number_officers">SHSQ-SHQN:</string>
+    <string name="rank_driven">Hạng lái xe:</string>
+    <string name="date_register">Ngày cấp:</string>
+    <string name="detail">Chi tiết</string>
+
 
 </resources>

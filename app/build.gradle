@@ -45,4 +45,8 @@ dependencies {
 
     //gson
     implementation 'com.google.code.gson:gson:2.8.2'
+
+    implementation('com.github.tony19:logback-android-classic:1.1.1-6') {
+        exclude group: 'com.google.android', module: 'android'
+    }
 }

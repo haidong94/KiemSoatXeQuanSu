@@ -17,11 +17,14 @@ import com.example.dong.kiemsoatxequansu.R;
 import com.example.dong.kiemsoatxequansu.ui.notebook.ICallBackData;
 import com.example.dong.kiemsoatxequansu.ui.notebook.SoTayActivity;
 import com.example.dong.kiemsoatxequansu.ui.notebook.SotayAsynstask;
+import com.example.dong.kiemsoatxequansu.ui.searchdrivinglicense.DrivingLicenseActivity;
+import com.example.dong.kiemsoatxequansu.ui.searchdrivinglicense.DrivingLicenseAsynctack;
+import com.example.dong.kiemsoatxequansu.ui.searchdrivinglicense.ICallBackDataDrivingLicense;
 import com.example.dong.kiemsoatxequansu.ui.searchinfor.TraThongTinActivity;
 
-public class MainActivity extends AppCompatActivity implements ICallBackData {
+public class MainActivity extends AppCompatActivity implements ICallBackData,ICallBackDataDrivingLicense {
 
-    CardView cvSoTayLaiXe, cvTraThongTin, cv_BienBanViPham;
+    CardView cvSoTayLaiXe, cvLicensePlates, cvSearchDrivingLicense;
     private static final int MY_PERMISSIONS_REQUEST = 1;
 
     @Override
@@ -29,17 +32,6 @@ public class MainActivity extends AppCompatActivity implements ICallBackData {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String testValue = "Hello, world!";
-
-        byte[] encodeValue = Base64.encode(testValue.getBytes(), Base64.DEFAULT);
-        byte[] decodeValue = Base64.decode(encodeValue, Base64.DEFAULT);
-
-        String a=new String(encodeValue);
-        String b=new String(decodeValue);
-
-        Log.d("TEST", "defaultValue = " + testValue);
-        Log.d("TEST", "encodeValue = " + a);
-        Log.d("TEST", "decodeValue = " +b);
         addControl();
         addEvent();
 
@@ -55,10 +47,8 @@ public class MainActivity extends AppCompatActivity implements ICallBackData {
             @Override
             public void onClick(View view) {
                 try {
-
-                    SotayAsynstask soTayActivity=new SotayAsynstask(MainActivity.this);
-                    soTayActivity.execute();
-
+                    SotayAsynstask sotayAsynstask=new SotayAsynstask(MainActivity.this);
+                    sotayAsynstask.execute();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -66,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements ICallBackData {
             }
         });
 
-        cvTraThongTin.setOnClickListener(new View.OnClickListener() {
+        cvLicensePlates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
@@ -78,11 +68,12 @@ public class MainActivity extends AppCompatActivity implements ICallBackData {
 
             }
         });
-        cv_BienBanViPham.setOnClickListener(new View.OnClickListener() {
+        cvSearchDrivingLicense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    Toast.makeText(MainActivity.this,"Tính năng đang phát triển",Toast.LENGTH_SHORT).show();
+                    DrivingLicenseAsynctack drivingLicenseAsynctack=new DrivingLicenseAsynctack(MainActivity.this);
+                    drivingLicenseAsynctack.execute();
                 } catch (Exception e) {
                    e.printStackTrace();
                 }
@@ -98,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements ICallBackData {
     private void addControl() {
         try {
             cvSoTayLaiXe = findViewById(R.id.cvSoTayLaiXe);
-            cvTraThongTin = findViewById(R.id.cvTraThongTin);
-            cv_BienBanViPham = findViewById(R.id.cv_BienBanViPham);
+            cvLicensePlates = findViewById(R.id.cvLicensePlates);
+            cvSearchDrivingLicense = findViewById(R.id.cvSearchDrivingLicense);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -137,12 +128,22 @@ public class MainActivity extends AppCompatActivity implements ICallBackData {
     }
 
     /**
-     * Callback dữ liệu
+     * Callback dữ liệu tra cứu phụ tùng xe
      * Created by Dong on 19-Apr-18
      */
     @Override
     public void callBackData() {
         Intent intent = new Intent(MainActivity.this, SoTayActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Callback dữ liệu tra cứu giấy phép lái xe
+     * Created by Dong on 19-Apr-18
+     */
+    @Override
+    public void callBackDataDrivingLicense() {
+        Intent intent = new Intent(MainActivity.this, DrivingLicenseActivity.class);
         startActivity(intent);
     }
 }
