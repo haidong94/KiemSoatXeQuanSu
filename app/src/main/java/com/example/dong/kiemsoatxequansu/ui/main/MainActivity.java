@@ -3,7 +3,10 @@ package com.example.dong.kiemsoatxequansu.ui.main;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +14,7 @@ import android.support.v7.widget.CardView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.dong.kiemsoatxequansu.R;
@@ -25,6 +29,7 @@ import com.example.dong.kiemsoatxequansu.ui.searchinfor.TraThongTinActivity;
 public class MainActivity extends AppCompatActivity implements ICallBackData,ICallBackDataDrivingLicense {
 
     CardView cvSoTayLaiXe, cvLicensePlates, cvSearchDrivingLicense;
+    ImageView ivAvatar;
     private static final int MY_PERMISSIONS_REQUEST = 1;
 
     @Override
@@ -91,6 +96,11 @@ public class MainActivity extends AppCompatActivity implements ICallBackData,ICa
             cvSoTayLaiXe = findViewById(R.id.cvSoTayLaiXe);
             cvLicensePlates = findViewById(R.id.cvLicensePlates);
             cvSearchDrivingLicense = findViewById(R.id.cvSearchDrivingLicense);
+            ivAvatar = findViewById(R.id.ivAvatar);
+
+            String imageInSD = Environment.getExternalStorageDirectory().getAbsolutePath() +"/avatar/hhdong.PNG";
+            Bitmap bitmap = BitmapFactory.decodeFile(imageInSD);
+            ivAvatar.setImageBitmap(bitmap);
         } catch (Exception e) {
             e.printStackTrace();
         }

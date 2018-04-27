@@ -186,9 +186,93 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "20:1259986086117920532",
+      "lastPropertyId": "19:1378210995659352811",
+      "name": "DrivingLicense",
+      "properties": [
+        {
+          "id": "1:4002472667862535814",
+          "name": "idDrivingLicense"
+        },
+        {
+          "id": "2:1221811211469686687",
+          "name": "numberDrivingLicense"
+        },
+        {
+          "id": "3:6294474702268404471",
+          "name": "dateRegister"
+        },
+        {
+          "id": "4:3590469970020799132",
+          "name": "nameDriver"
+        },
+        {
+          "id": "5:7021848568207383056",
+          "name": "birthDay"
+        },
+        {
+          "id": "6:9206186648860335381",
+          "name": "codePerson"
+        },
+        {
+          "id": "7:1617961614769506729",
+          "name": "codeDateRanger"
+        },
+        {
+          "id": "8:4521946214374206076",
+          "name": "codeIssuedBy"
+        },
+        {
+          "id": "9:7197165074858534333",
+          "name": "dateOfEnlistment"
+        },
+        {
+          "id": "10:5550293503733371364",
+          "name": "dateOfRecruitment"
+        },
+        {
+          "id": "11:842772212040990235",
+          "name": "kilometersDriven"
+        },
+        {
+          "id": "12:5489139046723675479",
+          "name": "timeHasDrove"
+        },
+        {
+          "id": "13:4212308519093952207",
+          "name": "village"
+        },
+        {
+          "id": "14:7998824087543331377",
+          "name": "town"
+        },
+        {
+          "id": "15:1767404117095928027",
+          "name": "district"
+        },
+        {
+          "id": "16:3010204960279212466",
+          "name": "provinces"
+        },
+        {
+          "id": "17:4134514107095716375",
+          "name": "numberOfficers"
+        },
+        {
+          "id": "18:5846101413909010070",
+          "name": "nameUnit"
+        },
+        {
+          "id": "19:1378210995659352811",
+          "name": "idCatalog"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "19:4539206769927157137",
+  "lastEntityId": "20:1259986086117920532",
   "lastIndexId": "4:1432531296935922147",
   "lastRelationId": "12:3988277022806632609",
   "lastSequenceId": "0:0",

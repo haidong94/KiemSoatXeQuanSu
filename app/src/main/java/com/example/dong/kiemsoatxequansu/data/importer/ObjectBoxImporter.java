@@ -67,15 +67,15 @@ public class ObjectBoxImporter {
         detailMatterChildBox = boxStore.boxFor(DetailMatterChild.class);
         subMatterChildBox = boxStore.boxFor(SubMatterChild.class);
 
-        drivingLicenseCatalogBox=boxStore.boxFor(DrivingLicenseCatalog.class);
-        drivingLicenseBox=boxStore.boxFor(DrivingLicense.class);
+        drivingLicenseCatalogBox = boxStore.boxFor(DrivingLicenseCatalog.class);
+        drivingLicenseBox = boxStore.boxFor(DrivingLicense.class);
     }
 
     /**
      * Import dữ liệu giấy phép lái xe
      * Created by Dong on 24-Apr-18
      */
-    public void importDrivingLicenseFromJson(){
+    public void importDrivingLicenseFromJson() {
 
         try {
             File sdcard = Environment.getExternalStorageDirectory();
@@ -94,7 +94,7 @@ public class ObjectBoxImporter {
                     drivingLicenseCatalog.setIdCatalog(catalog.getIdCatalog());
                     drivingLicenseCatalog.setClassCatalog(Commons.encodeString(catalog.getClassCatalog()));
                     drivingLicenseCatalog.setNotesCatalog(Commons.encodeString(catalog.getNotesCatalog()));
-                    if(catalog.getExpiryDate()!=null) {
+                    if (catalog.getExpiryDate() != null) {
                         drivingLicenseCatalog.setExpiryDate(Commons.encodeString(catalog.getExpiryDate()));
                     }
                     catalogListEncode.add(drivingLicenseCatalog);
@@ -132,13 +132,16 @@ public class ObjectBoxImporter {
                     drivingLicenseEncode.setNumberOfficers(Commons.encodeString(drivingLicense.getNumberOfficers()));
                     drivingLicenseEncode.setNameUnit(Commons.encodeString(drivingLicense.getNameUnit()));
                     drivingLicenseEncode.setIdCatalog(drivingLicense.getIdCatalog());
+                    if (!drivingLicense.getAvatar().isEmpty() && drivingLicense.getAvatar() != null) {
+                        drivingLicenseEncode.setAvatar(Commons.encodeString(drivingLicense.getAvatar()));
+                    }
 
                     drivingLicenseListEncode.add(drivingLicenseEncode);
                 }
                 drivingLicenseBox.put(drivingLicenseListEncode);
             }
         } catch (Exception e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
 
     }

@@ -189,7 +189,7 @@
     },
     {
       "id": "20:1259986086117920532",
-      "lastPropertyId": "19:1378210995659352811",
+      "lastPropertyId": "20:6732202300305149725",
       "name": "DrivingLicense",
       "properties": [
         {
@@ -267,6 +267,10 @@
         {
           "id": "19:1378210995659352811",
           "name": "idCatalog"
+        },
+        {
+          "id": "20:6732202300305149725",
+          "name": "avatar"
         }
       ],
       "relations": []
