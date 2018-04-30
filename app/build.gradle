@@ -49,4 +49,10 @@ dependencies {
     implementation('com.github.tony19:logback-android-classic:1.1.1-6') {
         exclude group: 'com.google.android', module: 'android'
     }
+
+    implementation ('com.alibaba.android:ultraviewpager:1.0.7.6@aar') {
+        transitive = true
+    }
+
+    implementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
 }

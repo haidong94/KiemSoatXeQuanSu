@@ -1,21 +1,14 @@
 package com.example.dong.kiemsoatxequansu.ui.main;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.dong.kiemsoatxequansu.R;
 import com.example.dong.kiemsoatxequansu.ui.notebook.ICallBackData;
@@ -24,12 +17,11 @@ import com.example.dong.kiemsoatxequansu.ui.notebook.SotayAsynstask;
 import com.example.dong.kiemsoatxequansu.ui.searchdrivinglicense.DrivingLicenseActivity;
 import com.example.dong.kiemsoatxequansu.ui.searchdrivinglicense.DrivingLicenseAsynctack;
 import com.example.dong.kiemsoatxequansu.ui.searchdrivinglicense.ICallBackDataDrivingLicense;
-import com.example.dong.kiemsoatxequansu.ui.searchinfor.TraThongTinActivity;
+import com.example.dong.kiemsoatxequansu.ui.searchinfor.SearchLisenceVehileActivity;
 
 public class MainActivity extends AppCompatActivity implements ICallBackData,ICallBackDataDrivingLicense {
 
-    CardView cvSoTayLaiXe, cvLicensePlates, cvSearchDrivingLicense;
-    ImageView ivAvatar;
+    CardView cvSoTayLaiXe, cvRecognizerLicensePlates, cvSearchDrivingLicense,cvSearchLicensePlates;
     private static final int MY_PERMISSIONS_REQUEST = 1;
 
     @Override
@@ -61,11 +53,11 @@ public class MainActivity extends AppCompatActivity implements ICallBackData,ICa
             }
         });
 
-        cvLicensePlates.setOnClickListener(new View.OnClickListener() {
+        cvRecognizerLicensePlates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    Intent intent = new Intent(MainActivity.this, TraThongTinActivity.class);
+                    Intent intent = new Intent(MainActivity.this, SearchLisenceVehileActivity.class);
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -94,13 +86,9 @@ public class MainActivity extends AppCompatActivity implements ICallBackData,ICa
     private void addControl() {
         try {
             cvSoTayLaiXe = findViewById(R.id.cvSoTayLaiXe);
-            cvLicensePlates = findViewById(R.id.cvLicensePlates);
+            cvRecognizerLicensePlates = findViewById(R.id.cvRecognizerLicensePlates);
             cvSearchDrivingLicense = findViewById(R.id.cvSearchDrivingLicense);
-            ivAvatar = findViewById(R.id.ivAvatar);
-
-            String imageInSD = Environment.getExternalStorageDirectory().getAbsolutePath() +"/avatar/hhdong.PNG";
-            Bitmap bitmap = BitmapFactory.decodeFile(imageInSD);
-            ivAvatar.setImageBitmap(bitmap);
+            cvSearchLicensePlates = findViewById(R.id.cvSearchLicensePlates);
         } catch (Exception e) {
             e.printStackTrace();
         }

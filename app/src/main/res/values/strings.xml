@@ -2,7 +2,8 @@
     <string name="app_name">Kiểm soát xe quân sự</string>
     <string name="license_plates">Biển số xe</string>
     <string name="read_image">Đọc Biển Số Xe</string>
-    <string name="seach_information">TRA CỨU THÔNG TIN</string>
+    <string name="recognizer_license_plates_vehicle">NHẬN DẠNG BIỂN SỐ</string>
+    <string name="search_license_plates_vehicle">TRA CỨU BIỂN SỐ</string>
     <string name="notebook">SỔ TAY LÁI XE</string>
     <string name="violation_records">BIÊN BẢN VI PHẠM</string>
     <string name="demo">item</string>
@@ -53,6 +54,20 @@
     <string name="rank_driven">Hạng lái xe:</string>
     <string name="date_register">Ngày cấp:</string>
     <string name="detail">Chi tiết</string>
+    <string name="infor_vehicle">Thông tin xe</string>
+
+    <string name="license_plate">Biển số xe:</string>
+    <string name="category_vehicle">Nhóm xe:</string>
+    <string name="number_register">Số đăng kí:</string>
+    <string name="date_registers">Ngày đăng kí:</string>
+    <string name="frame_number">Số khung:</string>
+    <string name="machine_number">Số máy:</string>
+    <string name="source">Nguồn:</string>
+    <string name="rank_quality">Phân cấp chất lượng:</string>
+    <string name="date_increase">Ngày tăng:</string>
+    <string name="date_using">Ngày bắt đầu sử dụng:</string>
+    <string name="notes">Ghi chú:</string>
+    <string name="organzitation">Đơn vị:</string>
 
 
 </resources>

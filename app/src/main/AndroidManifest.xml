@@ -28,8 +28,14 @@
 
         </activity>
 
-        <activity android:name=".ui.searchinfor.TraThongTinActivity"
+        <activity android:name=".ui.searchinfor.SearchLisenceVehileActivity"
             android:parentActivityName=".ui.main.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
+        <activity android:name=".ui.searchinfor.InforVehicleActivity"
+            android:parentActivityName=".ui.searchinfor.SearchLisenceVehileActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
@@ -39,6 +45,8 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+
+
     </application>
 
 </manifest>

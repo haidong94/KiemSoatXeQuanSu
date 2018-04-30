@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -33,14 +34,13 @@ import com.example.dong.kiemsoatxequansu.R;
  * Created by DONG on 02-Jan-18.
  */
 
-public class TraThongTinActivity extends AppCompatActivity implements ICallBack, ProfileFragment.ImageProfile {
-    Toolbar toolbar;
+public class SearchLisenceVehileActivity extends AppCompatActivity implements ICallBack, ProfileFragment.ImageProfile {
 
-    ImageView imageView;
+    ImageView imageView, ivBack;
 
-    Button btnProcess;
+    Button btnProcess, btnSearch;
 
-    EditText tvResult;
+    TextView tvResult;
 
     StringBuilder stringBuilder;
 
@@ -60,7 +60,25 @@ public class TraThongTinActivity extends AppCompatActivity implements ICallBack,
 
         //Khởi tạo control
         addControl();
+        //Sự kiện các control
+        addEvent();
+    }
 
+    /**
+     * Sự kiện các control
+     * Created by Dong on 30-Apr-18
+     */
+    private void addEvent() {
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,12 +100,23 @@ public class TraThongTinActivity extends AppCompatActivity implements ICallBack,
                     Bitmap imageSelected = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
                     Bitmap noImage = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_camera)).getBitmap();
                     if (imageSelected == noImage) { //Nếu chưa chọn ảnh
-                        Toast.makeText(TraThongTinActivity.this, getResources().getString(R.string.not_a_photo), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SearchLisenceVehileActivity.this, getResources().getString(R.string.not_a_photo), Toast.LENGTH_SHORT).show();
                     } else {
-                        ImageAsynstask loginTask = new ImageAsynstask(TraThongTinActivity.this);
+                        ImageAsynstask loginTask = new ImageAsynstask(SearchLisenceVehileActivity.this);
                         loginTask.execute(imageSelected);
                         stringBuilder = loginTask.getStringFromImage();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent = new Intent(SearchLisenceVehileActivity.this, InforVehicleActivity.class);
+                    startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -102,21 +131,17 @@ public class TraThongTinActivity extends AppCompatActivity implements ICallBack,
     private void addControl() {
         try {
             imageView = findViewById(R.id.imageView);
+            ivBack = findViewById(R.id.ivBack);
             btnProcess = findViewById(R.id.btnProcess);
+            btnSearch = findViewById(R.id.btnSearch);
             tvResult = findViewById(R.id.tvResult);
 
-            toolbar = findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-            //quay về activity trước
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
+//            btnSearch.setAlpha(0.5f);
+//            btnSearch.setEnabled(false);
+//            tvResult.setAlpha(0.5f);
+//            tvResult.setVisibility(View.VISIBLE);
 
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);//mũi tên quay về
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -220,17 +245,19 @@ public class TraThongTinActivity extends AppCompatActivity implements ICallBack,
     public void callBackStringFromImage() {
         try {
             tvResult.setVisibility(View.VISIBLE);
+            btnSearch.setVisibility(View.VISIBLE);
+           // btnSearch.setAlpha(1f);
             if (stringBuilder.toString().equals("")) {
-                tvResult.getText().clear();
+                tvResult.setText("");
                 Toast.makeText(this, getResources().getString(R.string.quality_image_bad), Toast.LENGTH_SHORT).show();
             } else if (stringBuilder.toString().length() > 20) {
-                tvResult.getText().clear();
+                tvResult.setText("");
                 Toast.makeText(this, getResources().getString(R.string.not_a_license_plate), Toast.LENGTH_SHORT).show();
             } else {
-                tvResult.setText(stringBuilder.toString());
+                tvResult.setText(stringBuilder.toString().trim());
             }
         } catch (Exception e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
     }
 

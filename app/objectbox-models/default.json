@@ -274,9 +274,73 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "21:8877887566606977811",
+      "lastPropertyId": "3:7943481678649621261",
+      "name": "CategoryVehicle",
+      "properties": [
+        {
+          "id": "1:5576666419275950875",
+          "name": "idCategoryVehicle"
+        },
+        {
+          "id": "2:1204703325357412575",
+          "name": "name"
+        },
+        {
+          "id": "3:7943481678649621261",
+          "name": "parentId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "22:1933483043444975104",
+      "lastPropertyId": "3:5518192874096746690",
+      "name": "SignLicensePlates",
+      "properties": [
+        {
+          "id": "1:8451118120494210666",
+          "name": "idLicensePlates"
+        },
+        {
+          "id": "2:139623044100473066",
+          "name": "name"
+        },
+        {
+          "id": "3:5518192874096746690",
+          "name": "sign"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "23:8485517077878850814",
+      "lastPropertyId": "4:3275966251062062056",
+      "name": "UnitOrganization",
+      "properties": [
+        {
+          "id": "1:5075183561237943874",
+          "name": "idUnit"
+        },
+        {
+          "id": "2:8802949439636474511",
+          "name": "name"
+        },
+        {
+          "id": "3:1741168564437087280",
+          "name": "shortName"
+        },
+        {
+          "id": "4:3275966251062062056",
+          "name": "parentId"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "20:1259986086117920532",
+  "lastEntityId": "23:8485517077878850814",
   "lastIndexId": "4:1432531296935922147",
   "lastRelationId": "12:3988277022806632609",
   "lastSequenceId": "0:0",

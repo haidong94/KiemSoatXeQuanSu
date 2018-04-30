@@ -54,6 +54,19 @@ public class ObjectBoxImporter {
     private Box<DrivingLicense> drivingLicenseBox;
     private Activity activity;
 
+    //Các file dữ liệu tra cứu giấy đăng kí xe
+    private static final String FILE_CATALOG="driving_license_catalog.txt";
+    private static final String FILE_DRIVING_LICENSE="driving_license.txt";
+
+    //các file dữ liệu tra cứu phụ tùng xe
+    private static final String FILE_VEHICLE="vehicle.txt";
+    private static final String FILE_MATTER="matter.txt";
+    private static final String FILE_MATTER_CHILD="matter_child.txt";
+    private static final String FILE_SPECIFICATION="specification.txt";
+    private static final String FILE_DETAIL_SUBMATTER_CHILD="detail_submatter_child.txt";
+    private static final String FILE_DETAIL_MATTER_CHILD="detail_matter_child.txt";
+    private static final String FILE_SUBMATTER_CHILD="sub_matter_child.txt";
+
 
     public ObjectBoxImporter(Resources resources, Activity activity) {
         this.resources = resources;
@@ -72,7 +85,7 @@ public class ObjectBoxImporter {
     }
 
     /**
-     * Import dữ liệu giấy phép lái xe
+     * Import dữ liệu giấy phép lái xe: gồm 2 bảng (bảng danh mục giấy phép lái xe và bảng giấy phép lái xe)
      * Created by Dong on 24-Apr-18
      */
     public void importDrivingLicenseFromJson() {
@@ -83,7 +96,7 @@ public class ObjectBoxImporter {
             transactionTime = new TransactionTime(System.currentTimeMillis());
 
             //file driving_license_catalog
-            File fileCatalog = new File(sdcard, "driving_license_catalog.txt");
+            File fileCatalog = new File(sdcard, FILE_CATALOG);
             if (fileCatalog.exists()) {
                 String getCatalogDrivingFromFile = readTextFromFile(fileCatalog);
                 List<DrivingLicenseCatalog> catalogList = convertStringToObjectCatalog(getCatalogDrivingFromFile);
@@ -104,7 +117,7 @@ public class ObjectBoxImporter {
 
 
             //file driving_license
-            File fileDrivingLicense = new File(sdcard, "driving_license.txt");
+            File fileDrivingLicense = new File(sdcard, FILE_DRIVING_LICENSE);
             if (fileDrivingLicense.exists()) {
                 String getDrivingLicenseFromFile = readTextFromFile(fileDrivingLicense);
                 List<DrivingLicense> drivingLicenseList = convertStringToObjectDrivingLicense(getDrivingLicenseFromFile);
@@ -159,7 +172,7 @@ public class ObjectBoxImporter {
             transactionTime = new TransactionTime(System.currentTimeMillis());
 
             //file vehicle
-            File fileVehicle = new File(sdcard, "vehicle.txt");
+            File fileVehicle = new File(sdcard, FILE_VEHICLE);
             if (fileVehicle.exists()) {
                 String getVehicleFromFile = readTextFromFile(fileVehicle);
                 List<Vehicle> vehicleList = convertStringToObject(getVehicleFromFile);
@@ -178,7 +191,7 @@ public class ObjectBoxImporter {
 
 
             //file matter
-            File fileMatter = new File(sdcard, "matter.txt");
+            File fileMatter = new File(sdcard, FILE_MATTER);
             if (fileMatter.exists()) {
                 String getMatterFromFile = readTextFromFile(fileMatter);
                 List<Matter> matterList = convertStringToObjectMatter(getMatterFromFile);
@@ -196,7 +209,7 @@ public class ObjectBoxImporter {
             }
 
             //file matter_child
-            File fileMatterChild = new File(sdcard, "matter_child.txt");
+            File fileMatterChild = new File(sdcard, FILE_MATTER_CHILD);
             if (fileMatterChild.exists()) {
                 String getMatterChildFromFile = readTextFromFile(fileMatterChild);
                 List<MatterChild> matterChildList = convertStringToObjectMatterChild(getMatterChildFromFile);
@@ -214,7 +227,7 @@ public class ObjectBoxImporter {
             }
 
             //file specification
-            File fileSpecification = new File(sdcard, "specification.txt");
+            File fileSpecification = new File(sdcard, FILE_SPECIFICATION);
             if (fileSpecification.exists()) {
                 String getSpecificationFromFile = readTextFromFile(fileSpecification);
                 List<Specification> specificationList = convertStringToObjectSpeccification(getSpecificationFromFile);
@@ -245,7 +258,7 @@ public class ObjectBoxImporter {
 
 
             //file detail_submatter_child
-            File fileDetailSubMatterChild = new File(sdcard, "detail_submatter_child.txt");
+            File fileDetailSubMatterChild = new File(sdcard, FILE_DETAIL_SUBMATTER_CHILD);
             if (fileDetailSubMatterChild.exists()) {
                 String getDetailSubMatterChild = readTextFromFile(fileDetailSubMatterChild);
                 List<DetailSubMatterChild> detailSubMatterChildList = convertStringToObjectDetailSubMatterChild(getDetailSubMatterChild);
@@ -253,7 +266,7 @@ public class ObjectBoxImporter {
             }
 
             //file detail_matter_child
-            File fileDetailMatterChild = new File(sdcard, "detail_matter_child.txt");
+            File fileDetailMatterChild = new File(sdcard, FILE_DETAIL_MATTER_CHILD);
             if (fileDetailMatterChild.exists()) {
                 String getDetailMatterChild = readTextFromFile(fileDetailMatterChild);
                 List<DetailMatterChild> detailMatterChildList = convertStringToObjectDetailMatterChild(getDetailMatterChild);
@@ -261,7 +274,7 @@ public class ObjectBoxImporter {
             }
 
             //file sub_matter_child
-            File fileSubMatterChild = new File(sdcard, "sub_matter_child.txt");
+            File fileSubMatterChild = new File(sdcard, FILE_SUBMATTER_CHILD);
             if (fileMatterChild.exists()) {
                 String getSubMatterChild = readTextFromFile(fileSubMatterChild);
                 List<SubMatterChild> subMatterChildList = convertStringToObjectSubMatterChild(getSubMatterChild);
