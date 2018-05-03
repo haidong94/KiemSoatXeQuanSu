@@ -6,14 +6,18 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.example.dong.kiemsoatxequansu.app.App;
+import com.example.dong.kiemsoatxequansu.data.model.CategoryVehicle;
 import com.example.dong.kiemsoatxequansu.data.model.DetailMatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.DetailSubMatterChild;
+import com.example.dong.kiemsoatxequansu.data.model.DetailVehicle;
 import com.example.dong.kiemsoatxequansu.data.model.DrivingLicense;
 import com.example.dong.kiemsoatxequansu.data.model.DrivingLicenseCatalog;
 import com.example.dong.kiemsoatxequansu.data.model.Matter;
 import com.example.dong.kiemsoatxequansu.data.model.MatterChild;
+import com.example.dong.kiemsoatxequansu.data.model.SignLicensePlates;
 import com.example.dong.kiemsoatxequansu.data.model.Specification;
 import com.example.dong.kiemsoatxequansu.data.model.SubMatterChild;
+import com.example.dong.kiemsoatxequansu.data.model.UnitOrganization;
 import com.example.dong.kiemsoatxequansu.data.model.Vehicle;
 import com.example.dong.kiemsoatxequansu.utils.Commons;
 import com.example.dong.kiemsoatxequansu.utils.TransactionTime;
@@ -52,7 +56,20 @@ public class ObjectBoxImporter {
     //Tra giấy phép lái xe
     private Box<DrivingLicenseCatalog> drivingLicenseCatalogBox;
     private Box<DrivingLicense> drivingLicenseBox;
+
+    //Tra giấy biển lái xe
+    private Box<UnitOrganization> unitOrganizationBox;
+    private Box<CategoryVehicle> categoryVehicleBox;
+    private Box<SignLicensePlates> signLicensePlatesBox;
+    private Box<DetailVehicle> detailVehicleBox;
+
     private Activity activity;
+
+    //Các file dữ liệu tra cứu biến số xe
+    private static final String FILE_UNIT_ORGANIZATION="unit_organization.txt";
+    private static final String FILE_CATEGORY_VEHICLE="category_vehicle.txt";
+    private static final String FILE_SIGN_LICENSE_PLATES="sign_license_plates.txt";
+    private static final String FILE_DETAIL_VEHICLE="detail_vehicle.txt";
 
     //Các file dữ liệu tra cứu giấy đăng kí xe
     private static final String FILE_CATALOG="driving_license_catalog.txt";
@@ -80,10 +97,121 @@ public class ObjectBoxImporter {
         detailMatterChildBox = boxStore.boxFor(DetailMatterChild.class);
         subMatterChildBox = boxStore.boxFor(SubMatterChild.class);
 
+        unitOrganizationBox=boxStore.boxFor(UnitOrganization.class);
+        categoryVehicleBox=boxStore.boxFor(CategoryVehicle.class);
+        signLicensePlatesBox=boxStore.boxFor(SignLicensePlates.class);
+        detailVehicleBox=boxStore.boxFor(DetailVehicle.class);
+
         drivingLicenseCatalogBox = boxStore.boxFor(DrivingLicenseCatalog.class);
         drivingLicenseBox = boxStore.boxFor(DrivingLicense.class);
     }
+    /**
+     * Import dữ liệu biển số xe: gồm 4 bảng (bảng nhóm xe, bảng đơn vị, bảng kí hiệu biển số và bảng chi tiết xe)
+     * Created by Dong on 24-Apr-18
+     */
+    public void importDrivingLicensePlatesFromJson() {
+        try {
+            File sdcard = Environment.getExternalStorageDirectory();
+            // transaction timer
+            transactionTime = new TransactionTime(System.currentTimeMillis());
 
+            //FILE_UNIT_ORGANIZATION
+            File fileUnitOrganization = new File(sdcard, FILE_UNIT_ORGANIZATION);
+            if (fileUnitOrganization.exists()) {
+                String getCatalogDrivingFromFile = readTextFromFile(fileUnitOrganization);
+                List<UnitOrganization> unitOrganizationList = convertStringToObjectUnitOrganization(getCatalogDrivingFromFile);
+                List<UnitOrganization> unitOrganizationListEncode = new ArrayList<>();
+                for (UnitOrganization unitOrganization : unitOrganizationList) {
+                    //Tạo object chứa dữ liệu mã hóa
+                    UnitOrganization unitOrganizationEncode = new UnitOrganization();
+                    unitOrganizationEncode.setIdUnit(unitOrganization.getIdUnit());
+                    unitOrganizationEncode.setParentId(unitOrganization.getParentId());
+                    unitOrganizationEncode.setName(Commons.encodeString(unitOrganization.getName()));
+                    unitOrganizationEncode.setShortName(Commons.encodeString(unitOrganization.getShortName()));
+
+                    unitOrganizationListEncode.add(unitOrganizationEncode);
+                }
+                unitOrganizationBox.put(unitOrganizationListEncode);
+            }
+
+            //FILE_CATEGORY_VEHICLE
+            File fileCategoryVehicle = new File(sdcard, FILE_CATEGORY_VEHICLE);
+            if (fileCategoryVehicle.exists()) {
+                String getCatalogDrivingFromFile = readTextFromFile(fileCategoryVehicle);
+                List<CategoryVehicle> categoryVehicleList = convertStringToObjectCategoryVehicle(getCatalogDrivingFromFile);
+                List<CategoryVehicle> categoryVehicleListEncode = new ArrayList<>();
+                for (CategoryVehicle categoryVehicle : categoryVehicleList) {
+                    //Tạo object chứa dữ liệu mã hóa
+                    CategoryVehicle categoryVehicleEncode = new CategoryVehicle();
+                    categoryVehicleEncode.setIdCategoryVehicle(categoryVehicle.getIdCategoryVehicle());
+                    categoryVehicleEncode.setParentId(categoryVehicle.getParentId());
+                    categoryVehicleEncode.setName(Commons.encodeString(categoryVehicle.getName()));
+
+                    categoryVehicleListEncode.add(categoryVehicleEncode);
+                }
+                categoryVehicleBox.put(categoryVehicleListEncode);
+            }
+
+            //FILE_SIGN_LICENSE_PLATES
+            File fileSignLicensePlates = new File(sdcard, FILE_SIGN_LICENSE_PLATES);
+            if (fileSignLicensePlates.exists()) {
+                String getCatalogDrivingFromFile = readTextFromFile(fileSignLicensePlates);
+                List<SignLicensePlates> signLicensePlatesList = convertStringToObjectSignLicensePlates(getCatalogDrivingFromFile);
+                List<SignLicensePlates> signLicensePlatesListEncode = new ArrayList<>();
+                for (SignLicensePlates signLicensePlates : signLicensePlatesList) {
+                    //Tạo object chứa dữ liệu mã hóa
+                    SignLicensePlates signLicensePlatesEncode = new SignLicensePlates();
+                    signLicensePlatesEncode.setIdLicensePlates(signLicensePlates.getIdLicensePlates());
+                    signLicensePlatesEncode.setName(Commons.encodeString(signLicensePlates.getName()));
+                    signLicensePlatesEncode.setSign(Commons.encodeString(signLicensePlates.getSign()));
+
+                    signLicensePlatesListEncode.add(signLicensePlatesEncode);
+                }
+                signLicensePlatesBox.put(signLicensePlatesListEncode);
+            }
+
+            //FILE_DETAIL_VEHICLE
+            File fileDetailVehicle = new File(sdcard, FILE_DETAIL_VEHICLE);
+            if (fileDetailVehicle.exists()) {
+                String getCatalogDrivingFromFile = readTextFromFile(fileDetailVehicle);
+                List<DetailVehicle> detailVehicleList = convertStringToObjectDetailVehicle(getCatalogDrivingFromFile);
+                List<DetailVehicle> detailVehicleListEncode = new ArrayList<>();
+                for (DetailVehicle detailVehicle : detailVehicleList) {
+                    //Tạo object chứa dữ liệu mã hóa
+                    DetailVehicle detailVehicleEncode = new DetailVehicle();
+                    detailVehicleEncode.setIdVehicle(detailVehicle.getIdVehicle());
+                    detailVehicleEncode.setIdCategoryVehicle(detailVehicle.getIdCategoryVehicle());
+                    detailVehicleEncode.setIdLicensePlates(detailVehicle.getIdLicensePlates());
+                    detailVehicleEncode.setIdUnit(detailVehicle.getIdUnit());
+                    detailVehicleEncode.setDateIncrease(Commons.encodeString(detailVehicle.getDateIncrease()));
+                    detailVehicleEncode.setDateRegister(Commons.encodeString(detailVehicle.getDateRegister()));
+                    detailVehicleEncode.setFrameNumber(Commons.encodeString(detailVehicle.getFrameNumber()));
+                    detailVehicleEncode.setMachineNumber(Commons.encodeString(detailVehicle.getMachineNumber()));
+                    detailVehicleEncode.setDateUsing(Commons.encodeString(detailVehicle.getDateUsing()));
+                    detailVehicleEncode.setRankQuanlity(Commons.encodeString(detailVehicle.getRankQuanlity()));
+                    detailVehicleEncode.setNumberRegister(Commons.encodeString(detailVehicle.getNumberRegister()));
+                    detailVehicleEncode.setSoure(Commons.encodeString(detailVehicle.getSoure()));
+                    detailVehicleEncode.setLicensePlate(Commons.encodeString(detailVehicle.getLicensePlate()));
+                    detailVehicleEncode.setRankQuanlity(Commons.encodeString(detailVehicle.getRankQuanlity()));
+                    if (detailVehicle.getNotes() != null && !detailVehicle.getNotes().isEmpty()) {
+                        detailVehicleEncode.setNotes(Commons.encodeString(detailVehicle.getNotes()));
+                    }
+                    if (detailVehicle.getImageVehicle() != null && !detailVehicle.getImageVehicle().isEmpty()) {
+                        detailVehicleEncode.setImageVehicle(Commons.encodeString(detailVehicle.getImageVehicle()));
+                    }
+
+
+                    detailVehicleListEncode.add(detailVehicleEncode);
+                }
+                detailVehicleBox.put(detailVehicleListEncode);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     /**
      * Import dữ liệu giấy phép lái xe: gồm 2 bảng (bảng danh mục giấy phép lái xe và bảng giấy phép lái xe)
      * Created by Dong on 24-Apr-18
@@ -299,6 +427,74 @@ public class ObjectBoxImporter {
 
     }
 
+    /**
+     * Lấy danh sách các Vật liệu từ file
+     * Created_by hhdong 05/02/2018
+     *
+     * @param getTextFromFile tên file cần lấy
+     * @return danh sách các vật liệu
+     */
+    private List<UnitOrganization> convertStringToObjectUnitOrganization(String getTextFromFile) {
+        try {
+            UnitOrganization[] gsonObj = new Gson().fromJson(getTextFromFile, UnitOrganization[].class);
+            return Arrays.asList(gsonObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+    /**
+     * Lấy danh sách các Vật liệu từ file
+     * Created_by hhdong 05/02/2018
+     *
+     * @param getTextFromFile tên file cần lấy
+     * @return danh sách các vật liệu
+     */
+    private List<DetailVehicle> convertStringToObjectDetailVehicle(String getTextFromFile) {
+        try {
+            DetailVehicle[] gsonObj = new Gson().fromJson(getTextFromFile, DetailVehicle[].class);
+            return Arrays.asList(gsonObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+    /**
+     * Lấy danh sách các Vật liệu từ file
+     * Created_by hhdong 05/02/2018
+     *
+     * @param getTextFromFile tên file cần lấy
+     * @return danh sách các vật liệu
+     */
+    private List<SignLicensePlates> convertStringToObjectSignLicensePlates(String getTextFromFile) {
+        try {
+            SignLicensePlates[] gsonObj = new Gson().fromJson(getTextFromFile, SignLicensePlates[].class);
+            return Arrays.asList(gsonObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+    /**
+     * Lấy danh sách các Vật liệu từ file
+     * Created_by hhdong 05/02/2018
+     *
+     * @param getTextFromFile tên file cần lấy
+     * @return danh sách các vật liệu
+     */
+    private List<CategoryVehicle> convertStringToObjectCategoryVehicle(String getTextFromFile) {
+        try {
+            CategoryVehicle[] gsonObj = new Gson().fromJson(getTextFromFile, CategoryVehicle[].class);
+            return Arrays.asList(gsonObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
     /**
      * Lấy danh sách các Vật liệu từ file
      * Created_by hhdong 05/02/2018

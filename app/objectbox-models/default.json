@@ -338,9 +338,77 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "24:2535065133829324544",
+      "lastPropertyId": "15:4207050088647045495",
+      "name": "DetailVehicle",
+      "properties": [
+        {
+          "id": "1:749040935097679406",
+          "name": "idVehicle"
+        },
+        {
+          "id": "2:4139734538615108919",
+          "name": "idLicensePlates"
+        },
+        {
+          "id": "3:2255557812247578817",
+          "name": "idCategoryVehicle"
+        },
+        {
+          "id": "4:8850899172439206636",
+          "name": "idUnit"
+        },
+        {
+          "id": "5:1099478986619164425",
+          "name": "licensePlate"
+        },
+        {
+          "id": "6:2758923868642401391",
+          "name": "numberRegister"
+        },
+        {
+          "id": "7:3641175086875829042",
+          "name": "dateRegister"
+        },
+        {
+          "id": "8:448588304945373891",
+          "name": "frameNumber"
+        },
+        {
+          "id": "9:8836052479194752350",
+          "name": "machineNumber"
+        },
+        {
+          "id": "10:8286248613874352597",
+          "name": "soure"
+        },
+        {
+          "id": "11:7060341061780226843",
+          "name": "rankQuanlity"
+        },
+        {
+          "id": "12:9107707877713510657",
+          "name": "dateIncrease"
+        },
+        {
+          "id": "13:5799269531855025315",
+          "name": "dateUsing"
+        },
+        {
+          "id": "14:1828752297288602053",
+          "name": "notes"
+        },
+        {
+          "id": "15:4207050088647045495",
+          "name": "imageVehicle"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "23:8485517077878850814",
+  "lastEntityId": "24:2535065133829324544",
   "lastIndexId": "4:1432531296935922147",
   "lastRelationId": "12:3988277022806632609",
   "lastSequenceId": "0:0",

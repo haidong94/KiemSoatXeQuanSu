@@ -17,9 +17,11 @@ import com.example.dong.kiemsoatxequansu.ui.notebook.SotayAsynstask;
 import com.example.dong.kiemsoatxequansu.ui.searchdrivinglicense.DrivingLicenseActivity;
 import com.example.dong.kiemsoatxequansu.ui.searchdrivinglicense.DrivingLicenseAsynctack;
 import com.example.dong.kiemsoatxequansu.ui.searchdrivinglicense.ICallBackDataDrivingLicense;
+import com.example.dong.kiemsoatxequansu.ui.searchinfor.DrivingLicensePlatesAsynctack;
+import com.example.dong.kiemsoatxequansu.ui.searchinfor.ICallBackDataDrivingLicensePlates;
 import com.example.dong.kiemsoatxequansu.ui.searchinfor.SearchLisenceVehileActivity;
 
-public class MainActivity extends AppCompatActivity implements ICallBackData,ICallBackDataDrivingLicense {
+public class MainActivity extends AppCompatActivity implements ICallBackData,ICallBackDataDrivingLicense,ICallBackDataDrivingLicensePlates {
 
     CardView cvSoTayLaiXe, cvRecognizerLicensePlates, cvSearchDrivingLicense,cvSearchLicensePlates;
     private static final int MY_PERMISSIONS_REQUEST = 1;
@@ -57,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements ICallBackData,ICa
             @Override
             public void onClick(View view) {
                 try {
-                    Intent intent = new Intent(MainActivity.this, SearchLisenceVehileActivity.class);
-                    startActivity(intent);
+                    DrivingLicensePlatesAsynctack drivingLicensePlatesAsynctack=new DrivingLicensePlatesAsynctack(MainActivity.this);
+                    drivingLicensePlatesAsynctack.execute();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -142,6 +144,12 @@ public class MainActivity extends AppCompatActivity implements ICallBackData,ICa
     @Override
     public void callBackDataDrivingLicense() {
         Intent intent = new Intent(MainActivity.this, DrivingLicenseActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void callBackDataDrivingLicensePlates() {
+        Intent intent = new Intent(MainActivity.this, SearchLisenceVehileActivity.class);
         startActivity(intent);
     }
 }

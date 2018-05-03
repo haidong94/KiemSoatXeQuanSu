@@ -68,6 +68,8 @@
     <string name="date_using">Ngày bắt đầu sử dụng:</string>
     <string name="notes">Ghi chú:</string>
     <string name="organzitation">Đơn vị:</string>
+    <string name="not_notes">Không có ghi chú</string>
+    <string name="not_plates">Biển giả</string>
 
 
 </resources>
