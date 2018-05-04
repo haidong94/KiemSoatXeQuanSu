@@ -28,14 +28,20 @@
 
         </activity>
 
-        <activity android:name=".ui.searchinfor.SearchLisenceVehileActivity"
+        <activity android:name=".ui.searchinfor.RecognizerLisenceVehileActivity"
+            android:parentActivityName=".ui.main.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
+        <activity android:name=".ui.searchinfor.SearchLicenseVehicleActivity"
             android:parentActivityName=".ui.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
 
         <activity android:name=".ui.searchinfor.InforVehicleActivity"
-            android:parentActivityName=".ui.searchinfor.SearchLisenceVehileActivity"
+            android:parentActivityName=".ui.searchinfor.RecognizerLisenceVehileActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>

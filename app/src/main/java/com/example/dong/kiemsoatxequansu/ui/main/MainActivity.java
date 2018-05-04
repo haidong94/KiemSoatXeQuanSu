@@ -19,12 +19,14 @@ import com.example.dong.kiemsoatxequansu.ui.searchdrivinglicense.DrivingLicenseA
 import com.example.dong.kiemsoatxequansu.ui.searchdrivinglicense.ICallBackDataDrivingLicense;
 import com.example.dong.kiemsoatxequansu.ui.searchinfor.DrivingLicensePlatesAsynctack;
 import com.example.dong.kiemsoatxequansu.ui.searchinfor.ICallBackDataDrivingLicensePlates;
-import com.example.dong.kiemsoatxequansu.ui.searchinfor.SearchLisenceVehileActivity;
+import com.example.dong.kiemsoatxequansu.ui.searchinfor.RecognizerLisenceVehileActivity;
+import com.example.dong.kiemsoatxequansu.ui.searchinfor.SearchLicenseVehicleActivity;
 
 public class MainActivity extends AppCompatActivity implements ICallBackData,ICallBackDataDrivingLicense,ICallBackDataDrivingLicensePlates {
 
-    CardView cvSoTayLaiXe, cvRecognizerLicensePlates, cvSearchDrivingLicense,cvSearchLicensePlates;
+    private CardView cvSoTayLaiXe, cvRecognizerLicensePlates, cvSearchDrivingLicense,cvSearchLicensePlates;
     private static final int MY_PERMISSIONS_REQUEST = 1;
+    private int SEARCH_TYPE=0;//tìm kiếm bằng nhận dạng biển là 0, tìm kiếm bằng nhập tay là 1
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements ICallBackData,ICa
             @Override
             public void onClick(View view) {
                 try {
+                    SEARCH_TYPE=0;
                     DrivingLicensePlatesAsynctack drivingLicensePlatesAsynctack=new DrivingLicensePlatesAsynctack(MainActivity.this);
                     drivingLicensePlatesAsynctack.execute();
                 } catch (Exception e) {
@@ -76,6 +79,20 @@ public class MainActivity extends AppCompatActivity implements ICallBackData,ICa
                 } catch (Exception e) {
                    e.printStackTrace();
                 }
+            }
+        });
+
+        cvSearchLicensePlates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    SEARCH_TYPE=1;
+                    DrivingLicensePlatesAsynctack drivingLicensePlatesAsynctack=new DrivingLicensePlatesAsynctack(MainActivity.this);
+                    drivingLicensePlatesAsynctack.execute();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 
@@ -149,7 +166,12 @@ public class MainActivity extends AppCompatActivity implements ICallBackData,ICa
 
     @Override
     public void callBackDataDrivingLicensePlates() {
-        Intent intent = new Intent(MainActivity.this, SearchLisenceVehileActivity.class);
-        startActivity(intent);
+        if(SEARCH_TYPE==0) {
+            Intent intent = new Intent(MainActivity.this, RecognizerLisenceVehileActivity.class);
+            startActivity(intent);
+        }else {
+            Intent intent = new Intent(MainActivity.this, SearchLicenseVehicleActivity.class);
+            startActivity(intent);
+        }
     }
 }

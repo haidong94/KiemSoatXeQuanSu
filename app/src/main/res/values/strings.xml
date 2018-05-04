@@ -36,6 +36,7 @@
     <string name="not_a_license_plate">Không phải định dạng biển số xe</string>
     <string name="not_a_photo">Bạn chưa chọn ảnh</string>
     <string name="enter_driving_license">Nhập số giấy phép lái xe</string>
+    <string name="enter_license_plates">Nhập biển số xe</string>
     <string name="search_driving_license">TRA CỨU GIẤY PHÉP LÁI XE</string>
     <string name="search_infor">Tra cứu thông tin</string>
     <string name="empty_driving_license">Bạn chưa nhập số giấy phép lái xe</string>

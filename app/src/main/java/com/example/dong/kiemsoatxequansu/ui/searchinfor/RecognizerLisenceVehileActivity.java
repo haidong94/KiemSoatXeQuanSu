@@ -52,7 +52,7 @@ import io.objectbox.BoxStore;
  * Created by DONG on 02-Jan-18.
  */
 
-public class SearchLisenceVehileActivity extends AppCompatActivity implements ICallBack, ProfileFragment.ImageProfile {
+public class RecognizerLisenceVehileActivity extends AppCompatActivity implements ICallBack, ProfileFragment.ImageProfile {
 
     private ImageView imageView, ivBack;
 
@@ -144,9 +144,9 @@ public class SearchLisenceVehileActivity extends AppCompatActivity implements IC
                     Bitmap imageSelected = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
                     Bitmap noImage = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_camera)).getBitmap();
                     if (imageSelected == noImage) { //Nếu chưa chọn ảnh
-                        Toast.makeText(SearchLisenceVehileActivity.this, getResources().getString(R.string.not_a_photo), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RecognizerLisenceVehileActivity.this, getResources().getString(R.string.not_a_photo), Toast.LENGTH_SHORT).show();
                     } else {
-                        ImageAsynstask loginTask = new ImageAsynstask(SearchLisenceVehileActivity.this);
+                        ImageAsynstask loginTask = new ImageAsynstask(RecognizerLisenceVehileActivity.this);
                         loginTask.execute(imageSelected);
                         stringBuilder = loginTask.getStringFromImage();
                     }
@@ -160,7 +160,7 @@ public class SearchLisenceVehileActivity extends AppCompatActivity implements IC
             public void onClick(View v) {
                 try {
                     if (TextUtils.isEmpty(tvResult.getText().toString())) {
-                        Toast.makeText(SearchLisenceVehileActivity.this, getResources().getString(R.string.quality_image_bad), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RecognizerLisenceVehileActivity.this, getResources().getString(R.string.quality_image_bad), Toast.LENGTH_SHORT).show();
 
                     } else {
                         String numberDrivingLicensePlates = tvResult.getText().toString().trim().replace("-", "");
@@ -177,17 +177,17 @@ public class SearchLisenceVehileActivity extends AppCompatActivity implements IC
                             if (detailVehicle != null) {
                                 UnitOrganization unitOrganization=unitOrganizationBox.query().equal(UnitOrganization_.idUnit, detailVehicle.getIdUnit()).build().findFirst();
                                 CategoryVehicle categoryVehicle=categoryVehicleBox.query().equal(CategoryVehicle_.idCategoryVehicle, detailVehicle.getIdCategoryVehicle()).build().findFirst();
-                                Intent intent = new Intent(SearchLisenceVehileActivity.this, InforVehicleActivity.class);
+                                Intent intent = new Intent(RecognizerLisenceVehileActivity.this, InforVehicleActivity.class);
                                 intent.putExtra(Commons.KEY_VEHICLE, detailVehicle);
                                 intent.putExtra(Commons.KEY_UNIT, unitOrganization.getName());
                                 intent.putExtra(Commons.KEY_CATEGORY_VEHICLE, categoryVehicle.getName());
                                 startActivity(intent);
                             } else {
-                                Toast.makeText(SearchLisenceVehileActivity.this, getResources().getString(R.string.not_plates), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RecognizerLisenceVehileActivity.this, getResources().getString(R.string.not_plates), Toast.LENGTH_SHORT).show();
 
                             }
                         } else {
-                            Toast.makeText(SearchLisenceVehileActivity.this, getResources().getString(R.string.not_plates), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RecognizerLisenceVehileActivity.this, getResources().getString(R.string.not_plates), Toast.LENGTH_SHORT).show();
 
                         }
 

@@ -41,9 +41,9 @@ public class DrivingLicenseActivity extends AppCompatActivity {
     private BoxStore boxStore;
     private Box<DrivingLicenseCatalog> drivingLicenseCatalogBox;
     private Box<DrivingLicense> drivingLicenseBox;
-    TextInputLayout tilDrivingLicense;
-    EditText edDrivingLicense;
-    Button btnSearch;
+    private TextInputLayout tilDrivingLicense;
+    private EditText edDrivingLicense;
+    private Button btnSearch;
     private ImageView ivBack;
     private TransactionTime transactionTime;
 
@@ -191,6 +191,10 @@ public class DrivingLicenseActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Khởi tạo control
+     * Created by Dong on 04-May-18
+     */
     private void addControl() {
         ivBack = findViewById(R.id.ivBack);
         tilDrivingLicense = findViewById(R.id.tilDrivingLicense);
