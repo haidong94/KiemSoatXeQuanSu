@@ -54,15 +54,15 @@ import io.objectbox.BoxStore;
 
 public class SearchLisenceVehileActivity extends AppCompatActivity implements ICallBack, ProfileFragment.ImageProfile {
 
-    ImageView imageView, ivBack;
+    private ImageView imageView, ivBack;
 
-    Button btnProcess, btnSearch;
+    private Button btnProcess, btnSearch;
 
-    TextView tvResult;
+    private TextView tvResult;
 
-    StringBuilder stringBuilder;
+    private StringBuilder stringBuilder;
 
-    Uri selectedImage;
+    private Uri selectedImage;
 
     private static int PICK_IMAGE_GALLERY = 1;
 
