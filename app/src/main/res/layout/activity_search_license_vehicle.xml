@@ -48,7 +48,9 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:textColor="@color/colorPrimary"
+        android:background="@drawable/ripple_effect_button"
+        android:textColor="@color/colorWhile"
+        android:padding="5dp"
         android:id="@+id/btnSearch"
         android:layout_gravity="center"
         android:text="@string/search_infor"

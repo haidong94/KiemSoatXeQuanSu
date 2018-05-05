@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.dong.kiemsoatxequansu.R;
 import com.example.dong.kiemsoatxequansu.app.App;
@@ -84,6 +83,7 @@ public class DrivingLicenseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    tilDrivingLicense.setError(null);
                     //Kiểm tra nhập số giấy phép lái xe chưa
                     if (TextUtils.isEmpty(edDrivingLicense.getText().toString())) {
                         tilDrivingLicense.setError(getResources().getString(R.string.empty_driving_license));
@@ -168,7 +168,8 @@ public class DrivingLicenseActivity extends AppCompatActivity {
                                 }
                             }, 100);
                         } else {
-                            Toast.makeText(DrivingLicenseActivity.this, "Không có số đăng ký này", Toast.LENGTH_SHORT).show();
+                            //hiển thị thông báo biển giả
+                            Commons.createSweetAlertDialog(DrivingLicenseActivity.this, getResources().getString(R.string.not_driving_license), getResources().getString(R.string.not_data_driving_license));
                         }
                         transactionTime.setEnd(System.currentTimeMillis());
                         Log.d("ObjectBox", "createAllFromJson Task completed in " + transactionTime.getDuration() + "ms");

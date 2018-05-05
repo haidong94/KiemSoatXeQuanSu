@@ -32,7 +32,7 @@
     <string name="gallery">Bộ sưu tập</string>
     <string name="cancel">Hủy bỏ</string>
     <string name="choose_image_from">Chọn ảnh từ</string>
-    <string name="quality_image_bad">Chất lượng ảnh chưa tốt. Bạn có thể nhập tay</string>
+    <string name="quality_image_bad">Chất lượng ảnh chưa tốt</string>
     <string name="not_a_license_plate">Không phải định dạng biển số xe</string>
     <string name="not_a_photo">Bạn chưa chọn ảnh</string>
     <string name="enter_driving_license">Nhập số giấy phép lái xe</string>
@@ -71,6 +71,11 @@
     <string name="organzitation">Đơn vị:</string>
     <string name="not_notes">Không có ghi chú</string>
     <string name="not_plates">Biển giả</string>
+    <string name="empty_license_plates">Bạn chưa nhập biển số xe</string>
+    <string name="not_data_license_plates">Không có dữ liệu biển này</string>
+    <string name="short_license_plates">Biển xe quân đội phải ít nhất 6 kí tự</string>
+    <string name="not_data_driving_license">Không có số đăng ký này</string>
+    <string name="not_driving_license">Số đăng kí giả</string>
 
 
 </resources>

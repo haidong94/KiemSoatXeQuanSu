@@ -8,13 +8,13 @@ import android.os.AsyncTask;
 import com.example.dong.kiemsoatxequansu.R;
 import com.example.dong.kiemsoatxequansu.data.importer.ObjectBoxImporter;
 
-public class SotayAsynstask extends AsyncTask<Void, Void, Void> {
+public class NoteBookAsynstask extends AsyncTask<Void, Void, Void> {
 
     private Context context;
     private ICallBackData iCallBackData;
     private ProgressDialog progressDialog;
 
-    public SotayAsynstask(Context context) {
+    public NoteBookAsynstask(Context context) {
         this.context = context;
         progressDialog = new ProgressDialog(context, R.style.MyAlertDialogStyle);
         this.iCallBackData = (ICallBackData) context;

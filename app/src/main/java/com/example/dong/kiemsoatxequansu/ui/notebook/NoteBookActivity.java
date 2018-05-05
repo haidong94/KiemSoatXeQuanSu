@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.example.dong.kiemsoatxequansu.R;
 import com.example.dong.kiemsoatxequansu.app.App;
-import com.example.dong.kiemsoatxequansu.data.importer.ObjectBoxImporter;
 import com.example.dong.kiemsoatxequansu.data.model.DetailMatterChild;
 import com.example.dong.kiemsoatxequansu.data.model.DetailMatterChild_;
 import com.example.dong.kiemsoatxequansu.data.model.DetailSubMatterChild;
@@ -51,7 +50,7 @@ import io.objectbox.BoxStore;
  * Created by DONG on 31-Oct-17.
  */
 
-public class SoTayActivity extends AppCompatActivity {
+public class NoteBookActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST = 1;
 
@@ -98,7 +97,7 @@ public class SoTayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sotaylaixe);
+        setContentView(R.layout.activity_notebook);
 
         checkPermission();
         try {
@@ -111,7 +110,7 @@ public class SoTayActivity extends AppCompatActivity {
             detailMatterChildBox = boxStore.boxFor(DetailMatterChild.class);
             subMatterChildBox = boxStore.boxFor(SubMatterChild.class);
 
-//            ObjectBoxImporter objectBoxImporter = new ObjectBoxImporter(getResources(), SoTayActivity.this);
+//            ObjectBoxImporter objectBoxImporter = new ObjectBoxImporter(getResources(), NoteBookActivity.this);
 //            objectBoxImporter.importFromJson();
 
         } catch (Exception e) {
@@ -266,7 +265,7 @@ public class SoTayActivity extends AppCompatActivity {
             for(String valueEncode:listNameSubMatterChild){
                 listNameSubMatterChildDecode.add(Commons.decodeString(valueEncode));//giải mã tên
             }
-            adapterSubMatterChild = new ArrayAdapter<>(SoTayActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameSubMatterChildDecode);
+            adapterSubMatterChild = new ArrayAdapter<>(NoteBookActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameSubMatterChildDecode);
             spinSubMatterChild.setAdapter(adapterSubMatterChild);
             transactionTime.setEnd(System.currentTimeMillis());
             Log.d("ObjectBox", "createAllFromJson Task completed in " + transactionTime.getDuration() + "ms");
@@ -322,7 +321,7 @@ public class SoTayActivity extends AppCompatActivity {
 
                 //Kiểm tra dữ liệu không có
                 if (data.isEmpty()) {
-                    Toast.makeText(SoTayActivity.this, "Không có phụ tùng", Toast.LENGTH_LONG).show();
+                    Toast.makeText(NoteBookActivity.this, "Không có phụ tùng", Toast.LENGTH_LONG).show();
                 } else {
                     //notifidata in recycleview
                     specificationAdapter.swap(data);
@@ -403,7 +402,7 @@ public class SoTayActivity extends AppCompatActivity {
                             listNameSubMatterChild.add(subMatterChild.getNameSubMatterChild());
                         }
                     }
-                    adapterSubMatterChild = new ArrayAdapter<>(SoTayActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameSubMatterChild);
+                    adapterSubMatterChild = new ArrayAdapter<>(NoteBookActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameSubMatterChild);
                     spinSubMatterChild.setAdapter(adapterSubMatterChild);
 
 
@@ -454,7 +453,7 @@ public class SoTayActivity extends AppCompatActivity {
             for(String valueEncode:listNameMatterChild){
                 listNameMatterChildDecode.add(Commons.decodeString(valueEncode));//giải mã tên
             }
-            adapterMatterChild = new ArrayAdapter<>(SoTayActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameMatterChildDecode);
+            adapterMatterChild = new ArrayAdapter<>(NoteBookActivity.this, android.R.layout.simple_spinner_dropdown_item, listNameMatterChildDecode);
             spinMatterChild.setAdapter(adapterMatterChild);
         } catch (Exception e) {
            e.printStackTrace();

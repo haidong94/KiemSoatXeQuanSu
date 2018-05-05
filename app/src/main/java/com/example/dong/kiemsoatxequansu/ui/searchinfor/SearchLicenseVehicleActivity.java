@@ -1,6 +1,7 @@
 package com.example.dong.kiemsoatxequansu.ui.searchinfor;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -25,6 +26,7 @@ import com.example.dong.kiemsoatxequansu.data.model.UnitOrganization_;
 import com.example.dong.kiemsoatxequansu.utils.Commons;
 import com.example.dong.kiemsoatxequansu.utils.TransactionTime;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
@@ -86,37 +88,47 @@ public class SearchLicenseVehicleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    tilLicensePlates.setError(null);
                     if (TextUtils.isEmpty(edLicensePlates.getText().toString())) {
-                        Toast.makeText(SearchLicenseVehicleActivity.this, getResources().getString(R.string.quality_image_bad), Toast.LENGTH_SHORT).show();
-
+                        tilLicensePlates.setError(getResources().getString(R.string.empty_license_plates));
                     } else {
-                        //in hoa chuỗi nhập
-                        String numberDrivingLicensePlates = edLicensePlates.getText().toString().trim().replace("-", "").toUpperCase();
-                        //Lấy 2 kí tự đầu
-                        String signUnit = Character.toString(numberDrivingLicensePlates.charAt(0)) + Character.toString(numberDrivingLicensePlates.charAt(1));
-                        String signUnitEncode = Commons.encodeString(signUnit);
+                        if(edLicensePlates.getText().length()<6){
+                            //hiển thị thông báo biển giả
+                            Commons.createSweetAlertDialog(SearchLicenseVehicleActivity.this,getResources().getString(R.string.not_plates),getResources().getString(R.string.short_license_plates));
 
-                        //Kiểm tra 2 kí tự đầu trong bảng kí hiệu biển số: nếu không có là biển giả luôn
-                        SignLicensePlates signLicensePlates = signLicensePlatesBox.query().equal(SignLicensePlates_.sign, signUnitEncode).build().findFirst();
-                        if (signLicensePlates != null) {
-                            String numberEncode = Commons.encodeString(numberDrivingLicensePlates);
-                            //Kiểm tra biển xe trong bảng chi tiết xe:Nếu không có là biển giả
-                            DetailVehicle detailVehicle = detailVehicleBox.query().equal(DetailVehicle_.licensePlate, numberEncode).build().findFirst();
-                            if (detailVehicle != null) {
-                                UnitOrganization unitOrganization=unitOrganizationBox.query().equal(UnitOrganization_.idUnit, detailVehicle.getIdUnit()).build().findFirst();
-                                CategoryVehicle categoryVehicle=categoryVehicleBox.query().equal(CategoryVehicle_.idCategoryVehicle, detailVehicle.getIdCategoryVehicle()).build().findFirst();
-                                Intent intent = new Intent(SearchLicenseVehicleActivity.this, InforVehicleActivity.class);
-                                intent.putExtra(Commons.KEY_VEHICLE, detailVehicle);
-                                intent.putExtra(Commons.KEY_UNIT, unitOrganization.getName());
-                                intent.putExtra(Commons.KEY_CATEGORY_VEHICLE, categoryVehicle.getName());
-                                startActivity(intent);
+                        }else {
+                            //in hoa chuỗi nhập
+                            String numberDrivingLicensePlates = edLicensePlates.getText().toString().trim().replace("-", "").toUpperCase();
+                            //Lấy 2 kí tự đầu
+                            String signUnit = Character.toString(numberDrivingLicensePlates.charAt(0)) + Character.toString(numberDrivingLicensePlates.charAt(1));
+                            String signUnitEncode = Commons.encodeString(signUnit);
+
+                            //Kiểm tra 2 kí tự đầu trong bảng kí hiệu biển số: nếu không có là biển giả luôn
+                            SignLicensePlates signLicensePlates = signLicensePlatesBox.query().equal(SignLicensePlates_.sign, signUnitEncode).build().findFirst();
+                            if (signLicensePlates != null) {
+                                String numberEncode = Commons.encodeString(numberDrivingLicensePlates);
+                                //Kiểm tra biển xe trong bảng chi tiết xe:Nếu không có là biển giả
+                                DetailVehicle detailVehicle = detailVehicleBox.query().equal(DetailVehicle_.licensePlate, numberEncode).build().findFirst();
+                                if (detailVehicle != null) {
+                                    UnitOrganization unitOrganization = unitOrganizationBox.query().equal(UnitOrganization_.idUnit, detailVehicle.getIdUnit()).build().findFirst();
+                                    CategoryVehicle categoryVehicle = categoryVehicleBox.query().equal(CategoryVehicle_.idCategoryVehicle, detailVehicle.getIdCategoryVehicle()).build().findFirst();
+                                    Intent intent = new Intent(SearchLicenseVehicleActivity.this, InforVehicleActivity.class);
+                                    intent.putExtra(Commons.KEY_VEHICLE, detailVehicle);
+                                    intent.putExtra(Commons.KEY_UNIT, unitOrganization.getName());
+                                    intent.putExtra(Commons.KEY_CATEGORY_VEHICLE, categoryVehicle.getName());
+                                    startActivity(intent);
+                                } else {
+                                    //hiển thị thông báo biển giả
+                                    Commons.createSweetAlertDialog(SearchLicenseVehicleActivity.this,getResources().getString(R.string.not_plates),getResources().getString(R.string.not_data_license_plates));
+
+                                }
+
                             } else {
-                                Toast.makeText(SearchLicenseVehicleActivity.this, getResources().getString(R.string.not_plates), Toast.LENGTH_SHORT).show();
+                                //hiển thị thông báo biển giả
+                                Commons.createSweetAlertDialog(SearchLicenseVehicleActivity.this,getResources().getString(R.string.not_plates),getResources().getString(R.string.not_data_license_plates));
+
 
                             }
-                        } else {
-                            Toast.makeText(SearchLicenseVehicleActivity.this, getResources().getString(R.string.not_plates), Toast.LENGTH_SHORT).show();
-
                         }
 
                     }
@@ -133,4 +145,6 @@ public class SearchLicenseVehicleActivity extends AppCompatActivity {
         edLicensePlates = findViewById(R.id.edLicensePlates);
         btnSearch = findViewById(R.id.btnSearch);
     }
+
+
 }

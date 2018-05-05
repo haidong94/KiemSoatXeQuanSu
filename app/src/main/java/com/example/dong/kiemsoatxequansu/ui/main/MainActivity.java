@@ -8,12 +8,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.example.dong.kiemsoatxequansu.R;
 import com.example.dong.kiemsoatxequansu.ui.notebook.ICallBackData;
-import com.example.dong.kiemsoatxequansu.ui.notebook.SoTayActivity;
-import com.example.dong.kiemsoatxequansu.ui.notebook.SotayAsynstask;
+import com.example.dong.kiemsoatxequansu.ui.notebook.NoteBookActivity;
+import com.example.dong.kiemsoatxequansu.ui.notebook.NoteBookAsynstask;
 import com.example.dong.kiemsoatxequansu.ui.searchdrivinglicense.DrivingLicenseActivity;
 import com.example.dong.kiemsoatxequansu.ui.searchdrivinglicense.DrivingLicenseAsynctack;
 import com.example.dong.kiemsoatxequansu.ui.searchdrivinglicense.ICallBackDataDrivingLicense;
@@ -48,8 +47,8 @@ public class MainActivity extends AppCompatActivity implements ICallBackData,ICa
             @Override
             public void onClick(View view) {
                 try {
-                    SotayAsynstask sotayAsynstask=new SotayAsynstask(MainActivity.this);
-                    sotayAsynstask.execute();
+                    NoteBookAsynstask noteBookAsynstask =new NoteBookAsynstask(MainActivity.this);
+                    noteBookAsynstask.execute();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -150,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements ICallBackData,ICa
      */
     @Override
     public void callBackData() {
-        Intent intent = new Intent(MainActivity.this, SoTayActivity.class);
+        Intent intent = new Intent(MainActivity.this, NoteBookActivity.class);
         startActivity(intent);
     }
 

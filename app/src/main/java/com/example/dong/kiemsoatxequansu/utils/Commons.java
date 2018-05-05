@@ -1,8 +1,14 @@
 package com.example.dong.kiemsoatxequansu.utils;
 
+import android.content.Context;
 import android.util.Base64;
 
+import com.example.dong.kiemsoatxequansu.R;
+import com.example.dong.kiemsoatxequansu.ui.searchinfor.SearchLicenseVehicleActivity;
+
 import java.text.DecimalFormat;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class Commons {
     /**
@@ -42,4 +48,15 @@ public class Commons {
     public static final String KEY_VEHICLE = "vehicle";
     public static final String KEY_UNIT = "unit";
     public static final String KEY_CATEGORY_VEHICLE = "category_vehicle";
+
+    /**
+     * Create dialog biển giả
+     * Created by Dong on 05-May-18
+     */
+    public static void createSweetAlertDialog(Context context, String tiltle,String content){
+        new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(tiltle)
+                .setContentText(content)
+                .show();
+    }
 }

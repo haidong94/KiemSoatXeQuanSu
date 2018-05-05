@@ -11,19 +11,15 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,9 +31,6 @@ import com.example.dong.kiemsoatxequansu.data.model.CategoryVehicle;
 import com.example.dong.kiemsoatxequansu.data.model.CategoryVehicle_;
 import com.example.dong.kiemsoatxequansu.data.model.DetailVehicle;
 import com.example.dong.kiemsoatxequansu.data.model.DetailVehicle_;
-import com.example.dong.kiemsoatxequansu.data.model.DrivingLicense;
-import com.example.dong.kiemsoatxequansu.data.model.DrivingLicenseCatalog;
-import com.example.dong.kiemsoatxequansu.data.model.DrivingLicense_;
 import com.example.dong.kiemsoatxequansu.data.model.SignLicensePlates;
 import com.example.dong.kiemsoatxequansu.data.model.SignLicensePlates_;
 import com.example.dong.kiemsoatxequansu.data.model.UnitOrganization;
@@ -80,7 +73,7 @@ public class RecognizerLisenceVehileActivity extends AppCompatActivity implement
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trathongtin);
+        setContentView(R.layout.activity_recognizer_license_vehicle);
 
         //Get data từ database
         getData();
@@ -163,34 +156,39 @@ public class RecognizerLisenceVehileActivity extends AppCompatActivity implement
                         Toast.makeText(RecognizerLisenceVehileActivity.this, getResources().getString(R.string.quality_image_bad), Toast.LENGTH_SHORT).show();
 
                     } else {
-                        String numberDrivingLicensePlates = tvResult.getText().toString().trim().replace("-", "");
-                        //Lấy 2 kí tự đầu
-                        String signUnit = Character.toString(numberDrivingLicensePlates.charAt(0)) + Character.toString(numberDrivingLicensePlates.charAt(1));
-                        String signUnitEncode = Commons.encodeString(signUnit);
+                        if(tvResult.getText().length()<6){
+                            //hiển thị thông báo biển giả
+                            Commons.createSweetAlertDialog(RecognizerLisenceVehileActivity.this,getResources().getString(R.string.not_plates),getResources().getString(R.string.short_license_plates));
 
-                        //Kiểm tra 2 kí tự đầu trong bảng kí hiệu biển số: nếu không có là biển giả luôn
-                        SignLicensePlates signLicensePlates = signLicensePlatesBox.query().equal(SignLicensePlates_.sign, signUnitEncode).build().findFirst();
-                        if (signLicensePlates != null) {
-                            String numberEncode = Commons.encodeString(numberDrivingLicensePlates);
-                            //Kiểm tra biển xe trong bảng chi tiết xe:Nếu không có là biển giả
-                            DetailVehicle detailVehicle = detailVehicleBox.query().equal(DetailVehicle_.licensePlate, numberEncode).build().findFirst();
-                            if (detailVehicle != null) {
-                                UnitOrganization unitOrganization=unitOrganizationBox.query().equal(UnitOrganization_.idUnit, detailVehicle.getIdUnit()).build().findFirst();
-                                CategoryVehicle categoryVehicle=categoryVehicleBox.query().equal(CategoryVehicle_.idCategoryVehicle, detailVehicle.getIdCategoryVehicle()).build().findFirst();
-                                Intent intent = new Intent(RecognizerLisenceVehileActivity.this, InforVehicleActivity.class);
-                                intent.putExtra(Commons.KEY_VEHICLE, detailVehicle);
-                                intent.putExtra(Commons.KEY_UNIT, unitOrganization.getName());
-                                intent.putExtra(Commons.KEY_CATEGORY_VEHICLE, categoryVehicle.getName());
-                                startActivity(intent);
+                        }else {
+                            String numberDrivingLicensePlates = tvResult.getText().toString().trim().replace("-", "");
+                            //Lấy 2 kí tự đầu
+                            String signUnit = Character.toString(numberDrivingLicensePlates.charAt(0)) + Character.toString(numberDrivingLicensePlates.charAt(1));
+                            String signUnitEncode = Commons.encodeString(signUnit);
+
+                            //Kiểm tra 2 kí tự đầu trong bảng kí hiệu biển số: nếu không có là biển giả luôn
+                            SignLicensePlates signLicensePlates = signLicensePlatesBox.query().equal(SignLicensePlates_.sign, signUnitEncode).build().findFirst();
+                            if (signLicensePlates != null) {
+                                String numberEncode = Commons.encodeString(numberDrivingLicensePlates);
+                                //Kiểm tra biển xe trong bảng chi tiết xe:Nếu không có là biển giả
+                                DetailVehicle detailVehicle = detailVehicleBox.query().equal(DetailVehicle_.licensePlate, numberEncode).build().findFirst();
+                                if (detailVehicle != null) {
+                                    UnitOrganization unitOrganization = unitOrganizationBox.query().equal(UnitOrganization_.idUnit, detailVehicle.getIdUnit()).build().findFirst();
+                                    CategoryVehicle categoryVehicle = categoryVehicleBox.query().equal(CategoryVehicle_.idCategoryVehicle, detailVehicle.getIdCategoryVehicle()).build().findFirst();
+                                    Intent intent = new Intent(RecognizerLisenceVehileActivity.this, InforVehicleActivity.class);
+                                    intent.putExtra(Commons.KEY_VEHICLE, detailVehicle);
+                                    intent.putExtra(Commons.KEY_UNIT, unitOrganization.getName());
+                                    intent.putExtra(Commons.KEY_CATEGORY_VEHICLE, categoryVehicle.getName());
+                                    startActivity(intent);
+                                } else {
+                                    //hiển thị thông báo biển giả
+                                    Commons.createSweetAlertDialog(RecognizerLisenceVehileActivity.this, getResources().getString(R.string.not_plates), getResources().getString(R.string.not_data_license_plates));
+                                }
                             } else {
-                                Toast.makeText(RecognizerLisenceVehileActivity.this, getResources().getString(R.string.not_plates), Toast.LENGTH_SHORT).show();
-
+                                //hiển thị thông báo biển giả
+                                Commons.createSweetAlertDialog(RecognizerLisenceVehileActivity.this, getResources().getString(R.string.not_plates), getResources().getString(R.string.not_data_license_plates));
                             }
-                        } else {
-                            Toast.makeText(RecognizerLisenceVehileActivity.this, getResources().getString(R.string.not_plates), Toast.LENGTH_SHORT).show();
-
                         }
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -329,7 +327,7 @@ public class RecognizerLisenceVehileActivity extends AppCompatActivity implement
                 tvResult.setText("");
                 Toast.makeText(this, getResources().getString(R.string.not_a_license_plate), Toast.LENGTH_SHORT).show();
             } else {
-                tvResult.setText(stringBuilder.toString().trim().replace("-", ""));
+                tvResult.setText(stringBuilder.toString().trim().replace("-", "").replace("\n",""));
             }
         } catch (Exception e) {
             e.printStackTrace();
