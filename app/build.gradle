@@ -55,6 +55,14 @@ dependencies {
     }
 
     implementation 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
+
+    //sweet alert
     implementation 'com.github.f0ris.sweetalert:library:1.5.1'
+
+    //circle imageview
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    //splash screen
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.12'
 
 }

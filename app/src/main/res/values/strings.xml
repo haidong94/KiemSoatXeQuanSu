@@ -8,11 +8,11 @@
     <string name="violation_records">BIÊN BẢN VI PHẠM</string>
     <string name="demo">item</string>
     <string name="select_type_car">Chọn Loại Xe</string>
-    <string name="select_car">Chọn Xe</string>
+    <string name="select_car">Xe</string>
     <string name="search">Tìm Kiếm</string>
-    <string name="detail_part">Chọn Công Tác Con</string>
-    <string name="select_part">Chọn Nhóm Công Tác</string>
-    <string name="select_part_sub">Chọn Công Tác Cháu</string>
+    <string name="detail_part">Cụm công tác</string>
+    <string name="select_part">HT Công Tác</string>
+    <string name="select_part_sub">Chi tiết</string>
     <string name="camera_permission_error">Camera Permission Error</string>
 
 
@@ -21,7 +21,7 @@
     <string name="style">Quy cách:</string>
     <string name="unit">Đơn vị tính:</string>
     <string name="quantity">Số lượng:</string>
-    <string name="price">Giá:</string>
+    <string name="price">Đơn giá:</string>
     <string name="close">Đóng</string>
     <string name="detail_specification">Chi Tiết Phụ Tùng</string>
     <string name="vnd">VND</string>

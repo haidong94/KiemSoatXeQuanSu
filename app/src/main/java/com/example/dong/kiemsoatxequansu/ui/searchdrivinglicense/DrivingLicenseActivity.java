@@ -29,6 +29,7 @@ import com.example.dong.kiemsoatxequansu.data.model.DrivingLicense_;
 import com.example.dong.kiemsoatxequansu.utils.Commons;
 import com.example.dong.kiemsoatxequansu.utils.TransactionTime;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
@@ -104,7 +105,7 @@ public class DrivingLicenseActivity extends AppCompatActivity {
                                     assert inflater != null;
                                     @SuppressLint("InflateParams") View dialogView = inflater.inflate(R.layout.dialog_driving_license, null);
                                     // set the custom dialog components - text, image and button
-                                    ImageView ivAvatar = dialogView.findViewById(R.id.ivAvatar);
+                                    CircleImageView ivAvatar = dialogView.findViewById(R.id.ivAvatar);
                                     TextView tvNumberDrivingLicense = dialogView.findViewById(R.id.tvNumberDrivingLicense);
                                     TextView tvDateRegiter = dialogView.findViewById(R.id.tvDateRegiter);
                                     TextView tvName = dialogView.findViewById(R.id.tvName);

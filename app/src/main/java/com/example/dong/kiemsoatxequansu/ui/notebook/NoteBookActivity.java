@@ -94,6 +94,7 @@ public class NoteBookActivity extends AppCompatActivity {
 
     private TransactionTime transactionTime; //Thời gian thực
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,6 +181,7 @@ public class NoteBookActivity extends AppCompatActivity {
         spinVehicle.setOnItemSelectedListener(onItemListener);
         spinMatter.setOnItemSelectedListener(onItemMatterListener);
         spinMatterChild.setOnItemSelectedListener(onItemMatterChildListener);
+        spinSubMatterChild.setOnItemSelectedListener(onItemMatterSubChildListener);
         btnSearch.setOnClickListener(clickButtonSearch);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,6 +226,25 @@ public class NoteBookActivity extends AppCompatActivity {
         });
 
     }
+    /**
+     * Lắng nghe thay đổi  spinner chi tiết
+     * Created by Dong on 5-Apr-18
+     */
+        private AdapterView.OnItemSelectedListener onItemMatterSubChildListener = new AdapterView.OnItemSelectedListener() {
+
+            @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            listSpecification.clear();
+            if(specificationAdapter!=null) {
+                specificationAdapter.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
 
     /**
      * Lắng nghe thay đổi  spinner nguyên liệu con để thay đổi spin cháu
@@ -232,6 +253,10 @@ public class NoteBookActivity extends AppCompatActivity {
     private AdapterView.OnItemSelectedListener onItemMatterChildListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            listSpecification.clear();
+            if(specificationAdapter!=null) {
+                specificationAdapter.notifyDataSetChanged();
+            }
             //Lấy xe được chọn
             transactionTime = new TransactionTime(System.currentTimeMillis());
             String nameVehicle = spinVehicle.getSelectedItem().toString();

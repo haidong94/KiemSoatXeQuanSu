@@ -21,7 +21,7 @@ import android.support.annotation.Nullable;
  */
 
 public class ProfileFragment extends DialogFragment {
-    ImageButton btnReturn,btnCheck;
+    ImageButton btnCheck;
 
     Uri uril;
 
@@ -42,7 +42,6 @@ public class ProfileFragment extends DialogFragment {
         final CropImageView cropImageView=  view.findViewById(R.id.cropImageView);
 
         try {
-            btnReturn=  view.findViewById(R.id.btnReturn);
             btnCheck=  view.findViewById(R.id.btnCheck);
             if (getArguments() != null){
                 String uri = getArguments().getString("Image",null);

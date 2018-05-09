@@ -119,6 +119,8 @@ public class RecognizerLisenceVehileActivity extends AppCompatActivity implement
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //clear text in textview before result recognize
+                tvResult.setText("");
                 checkPermission();
                 selectImage();
             }
@@ -266,12 +268,14 @@ public class RecognizerLisenceVehileActivity extends AppCompatActivity implement
             }
         }
 
-        Bundle bundle = new Bundle();
-        bundle.putString("Image", String.valueOf(selectedImage));
-        FragmentManager fm = getSupportFragmentManager();
-        ProfileFragment profileFragment = new ProfileFragment();
-        profileFragment.setArguments(bundle);
-        profileFragment.show(fm, "profile");
+        if(selectedImage!=null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("Image", String.valueOf(selectedImage));
+            FragmentManager fm = getSupportFragmentManager();
+            ProfileFragment profileFragment = new ProfileFragment();
+            profileFragment.setArguments(bundle);
+            profileFragment.show(fm, "profile");
+        }
     }
 
     /**
@@ -323,7 +327,7 @@ public class RecognizerLisenceVehileActivity extends AppCompatActivity implement
             if (stringBuilder.toString().equals("")) {
                 tvResult.setText("");
                 Toast.makeText(this, getResources().getString(R.string.quality_image_bad), Toast.LENGTH_SHORT).show();
-            } else if (stringBuilder.toString().length() > 20) {
+            } else if (stringBuilder.toString().length() > 10) {
                 tvResult.setText("");
                 Toast.makeText(this, getResources().getString(R.string.not_a_license_plate), Toast.LENGTH_SHORT).show();
             } else {

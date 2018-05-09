@@ -8,4 +8,5 @@
     <color name="colorBlack">#000000</color>
     <color name="colorWhile">#FFFFFF</color>
     <color name="colorRed">#be1616</color>
+    <color name="colorSplashScreen">#74BBFF</color>
 </resources>

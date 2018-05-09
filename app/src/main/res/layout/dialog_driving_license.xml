@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -26,12 +27,14 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp" />
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivAvatar"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/colorPrimary"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,6 +57,10 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -76,7 +83,10 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,7 +108,10 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,7 +133,10 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -142,7 +158,10 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -164,7 +183,10 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -186,7 +208,10 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -208,7 +233,10 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -230,7 +258,10 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -252,7 +283,10 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -274,7 +308,10 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -296,7 +333,10 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -318,7 +358,10 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorGray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
